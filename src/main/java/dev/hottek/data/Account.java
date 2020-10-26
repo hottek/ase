@@ -24,4 +24,12 @@ public class Account {
     public void setBalance(Float balance) {
         this.balance = balance;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "name='" + name + '\'' +
+                ", balance=" + balance +
+                '}';
+    }
 }
