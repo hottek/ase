@@ -82,13 +82,7 @@ public class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ArrayList<Byte> bytes = new ArrayList<>();
-        for (int i = 0; i < buffer.length; i++) {
-            if (buffer[i] != 0) {
-                bytes.add(buffer[i]);
-            }
-        }
-        Byte[] bufferWithoutZeros = bytes.toArray(new Byte[bytes.size()]);
+        Byte[] bufferWithoutZeros = reduceBuffer(buffer);
         return toPrimitives(bufferWithoutZeros);
     }
 
@@ -109,6 +103,16 @@ public class DataHandler {
             e.printStackTrace();
         }
         return new Account(name, Float.parseFloat(balance));*/
+    }
+
+    private Byte[] reduceBuffer(byte[] buffer) {
+        ArrayList<Byte> bytes = new ArrayList<>();
+        for (byte b : buffer) {
+            if (b != 0) {
+                bytes.add(b);
+            }
+        }
+        return bytes.toArray(new Byte[bytes.size()]);
     }
 
     private byte[] toPrimitives(Byte[] oBytes)
