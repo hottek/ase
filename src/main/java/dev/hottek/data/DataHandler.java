@@ -1,35 +1,101 @@
 package dev.hottek.data;
 
+import dev.hottek.data.encryption.PBEModel;
+import dev.hottek.data.encryption.PasswordBasedEncryption;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.spec.InvalidParameterSpecException;
+import java.util.ArrayList;
 
-public class DataLoader {
-    private String filePath;
 
-    public DataLoader() {
-        this.filePath = "test.fm";
+public class DataHandler {
+    private String ciphertextFilePath;
+    private String ivFilePath;
+    private PasswordBasedEncryption passwordBasedEncryption;
+
+    public DataHandler(String password) {
+        this.ciphertextFilePath = "test.fm";
+        this.ivFilePath = "iv.fm";
+        this.passwordBasedEncryption = new PasswordBasedEncryption(password.toCharArray());
     }
 
-    public Account loadData() {
-        InputStream is = getFileFromResourceAsStream();
-        Account account = printInputStream(is);
-
-        return account;
+    public String loadData() {
+        PBEModel pbeModel = readEncryptedFromFile();
+        byte[] bytes = new byte[0];
+        try {
+            bytes = passwordBasedEncryption.decrypt(pbeModel);
+        } catch (InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
+            e.printStackTrace();
+        }
+        return resolveInputStream(bytes);
     }
 
-    private InputStream getFileFromResourceAsStream() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(filePath);
+    public void saveData(String account) {
+        PBEModel pbeModel = null;
+        try {
+            pbeModel = passwordBasedEncryption.encrypt(account.getBytes());
+        } catch (InvalidKeyException | InvalidParameterSpecException | IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+        }
+        assert pbeModel != null;
+        writeEncryptedToFile(pbeModel);
+    }
 
-        if (inputStream == null) {
-            throw new IllegalArgumentException("file not found! " + filePath);
-        } else {
-            return inputStream;
+    private PBEModel readEncryptedFromFile() {
+        PBEModel pbeModel = null;
+        try {
+            InputStream ciphertextInputStream = new FileInputStream(ciphertextFilePath);
+            InputStream ivInputStream = new FileInputStream(ivFilePath);
+            byte[] ciphertextBytes = readBytesFromInputStream(ciphertextInputStream);
+            byte[] ivBytes = readBytesFromInputStream(ivInputStream);
+            pbeModel = new PBEModel(ivBytes, ciphertextBytes);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return pbeModel;
+    }
+
+    private void writeEncryptedToFile(PBEModel pbeModel) {
+        byte[] ciphertextBytes = pbeModel.getCiphertext();
+        byte[] ivBytes = pbeModel.getIv();
+        try {
+            OutputStream ciphertextOutputStream = new FileOutputStream(ciphertextFilePath);
+            OutputStream ivOutputStream = new FileOutputStream(ivFilePath);
+            ciphertextOutputStream.write(ciphertextBytes);
+            ivOutputStream.write(ivBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private Account printInputStream(InputStream is) {
-        String name = "";
+    private byte[] readBytesFromInputStream(InputStream inputStream) {
+        byte[] buffer = new byte[1024];
+        try {
+            int i;
+            do {
+                i = inputStream.read(buffer);
+            } while (i != -1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ArrayList<Byte> bytes = new ArrayList<>();
+        for (int i = 0; i < buffer.length; i++) {
+            if (buffer[i] != 0) {
+                bytes.add(buffer[i]);
+            }
+        }
+        Byte[] bufferWithoutZeros = bytes.toArray(new Byte[bytes.size()]);
+        return toPrimitives(bufferWithoutZeros);
+    }
+
+    private String resolveInputStream(byte[] bytes) {
+        String data = new String(bytes);
+        return data;
+        /*String name = "";
         String balance = "";
         try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(streamReader)) {
@@ -38,10 +104,21 @@ public class DataLoader {
                 if (line.startsWith("n")) name = line;
                 if (line.startsWith("b")) balance = line;
             }
-            return new Account(name.substring(1), Float.parseFloat(balance.substring(1)));
+            return new Account("l", 127.0f);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new Account(name, Float.parseFloat(balance));
+        return new Account(name, Float.parseFloat(balance));*/
+    }
+
+    private byte[] toPrimitives(Byte[] oBytes)
+    {
+        byte[] bytes = new byte[oBytes.length];
+
+        for(int i = 0; i < oBytes.length; i++) {
+            bytes[i] = oBytes[i];
+        }
+
+        return bytes;
     }
 }

@@ -3,6 +3,7 @@ package dev.hottek.data.encryption;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -25,10 +26,10 @@ public class PasswordBasedEncryption {
 
     public PasswordBasedEncryption(char[] password) {
         try {
-            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA128");
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
             KeySpec keySpec = new PBEKeySpec(password, salt, DERIVATION_ITERATION_COUNT, KEY_SIZE);
             byte[] secret = keyFactory.generateSecret(keySpec).getEncoded();
-            this.secretKey = new SecretKeyFactory(secret, "AES");
+            this.secretKey = new SecretKeySpec(secret, "AES");
             this.cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException e) {
             e.printStackTrace();
