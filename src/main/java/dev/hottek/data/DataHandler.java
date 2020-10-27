@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 
 public class DataHandler {
-    private String ciphertextFilePath;
-    private String ivFilePath;
-    private PasswordBasedEncryption passwordBasedEncryption;
+    private final String ciphertextFilePath;
+    private final String ivFilePath;
+    private final PasswordBasedEncryption passwordBasedEncryption;
 
     public DataHandler(String password) {
         this.ciphertextFilePath = "test.fm";
@@ -23,7 +23,7 @@ public class DataHandler {
         this.passwordBasedEncryption = new PasswordBasedEncryption(password.toCharArray());
     }
 
-    public String loadData() {
+    public Account loadData() {
         PBEModel pbeModel = readEncryptedFromFile();
         byte[] bytes = new byte[0];
         try {
@@ -31,13 +31,14 @@ public class DataHandler {
         } catch (InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
             e.printStackTrace();
         }
-        return resolveInputStream(bytes);
+        return convertBytesToData(bytes);
     }
 
-    public void saveData(String account) {
+    public void saveData(Account account) {
+        byte[] accountBytes = convertDataToBytes(account);
         PBEModel pbeModel = null;
         try {
-            pbeModel = passwordBasedEncryption.encrypt(account.getBytes());
+            pbeModel = passwordBasedEncryption.encrypt(accountBytes);
         } catch (InvalidKeyException | InvalidParameterSpecException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
@@ -86,23 +87,15 @@ public class DataHandler {
         return toPrimitives(bufferWithoutZeros);
     }
 
-    private String resolveInputStream(byte[] bytes) {
+    private Account convertBytesToData(byte[] bytes) {
         String data = new String(bytes);
-        return data;
-        /*String name = "";
-        String balance = "";
-        try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
-             BufferedReader reader = new BufferedReader(streamReader)) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("n")) name = line;
-                if (line.startsWith("b")) balance = line;
-            }
-            return new Account("l", 127.0f);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new Account(name, Float.parseFloat(balance));*/
+        String[] strings = data.split("\n");
+        return new Account(strings[0].substring(1), Float.parseFloat(strings[1].substring(1)));
+    }
+
+    private byte[] convertDataToBytes(Account account) {
+        String accountString = "n" + account.getName() + "\nb" + account.getBalance();
+        return accountString.getBytes();
     }
 
     private Byte[] reduceBuffer(byte[] buffer) {

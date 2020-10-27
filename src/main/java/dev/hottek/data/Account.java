@@ -27,9 +27,6 @@ public class Account {
 
     @Override
     public String toString() {
-        return "Account{" +
-                "name='" + name + '\'' +
-                ", balance=" + balance +
-                '}';
+        return name + '\n' + balance;
     }
 }
