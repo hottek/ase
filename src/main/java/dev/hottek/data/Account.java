@@ -3,10 +3,17 @@ package dev.hottek.data;
 public class Account {
     private String name;
     private Float balance;
+    private IBAN iban;
 
-    public Account(String name, float balance) {
+    public Account(String name, Float balance) {
         this.name = name;
         this.balance = balance;
+    }
+
+    public Account(String name, Float balance, IBAN iban) {
+        this.name = name;
+        this.balance = balance;
+        this.iban = iban;
     }
 
     public String getName() {
