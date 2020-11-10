@@ -4,11 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class FinanceManagerWindow extends JFrame {
+    private FinanceMangerPane financeMangerPane;
     public FinanceManagerWindow() throws HeadlessException {
-        initializeUI();
-    }
-
-    private void initializeUI() {
         this.setTitle("Finance Manager");
         this.setSize(600,600);
         JMenuBar menuBar = new JMenuBar();
@@ -17,13 +14,15 @@ public class FinanceManagerWindow extends JFrame {
         options.add(oSave);
         menuBar.add(options);
         this.setJMenuBar(menuBar);
-        this.setLayout(new BorderLayout());
+
+        this.financeMangerPane = new FinanceMangerPane();
+        this.add(financeMangerPane);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
     }
 
     public void displayText(String text) {
         JLabel label = new JLabel(text);
-        this.add(label, BorderLayout.NORTH);
+        financeMangerPane.accountPanelMap.get("Account1").add(label);
     }
 }
