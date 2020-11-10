@@ -23,7 +23,10 @@ public class DataHandler {
         this.passwordBasedEncryption = new PasswordBasedEncryption(password.toCharArray());
     }
 
-    public Account loadData() {
+    public Account loadData(boolean renewEncryption) {
+        if (renewEncryption) {
+            return new Account("lukas", 127f);
+        }
         PBEModel pbeModel = readEncryptedFromFile();
         byte[] bytes = new byte[0];
         try {

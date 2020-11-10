@@ -14,7 +14,7 @@ public class FinanceManagerController {
     }
 
     public void initialize() {
-        Account account = dataHandler.loadData();
+        Account account = dataHandler.loadData(false);
         financeManagerWindow.displayText(account.toString());
         dataHandler.saveData(account);
     }
