@@ -1,5 +1,7 @@
 package dev.hottek.view;
 
+import dev.hottek.data.DialogData;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -52,7 +54,11 @@ public class FinanceManagerWindow extends JFrame {
 
         private void newAccountPanel() {
             // TODO: Add Dialog to create new account or different type which is displayed in the panel
-            financeMangerPane.addAccountPanel("test");
+            CreateAccountDialog accountDialog = new CreateAccountDialog();
+            DialogData data = accountDialog.showDialog();
+            if (data.getResult() == 0) {
+                financeMangerPane.addAccountPanel(data.getData().getFirst());
+            }
         }
     }
 }
