@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Account1",
+    "balance": 1234,
+    "transactions": [
+      {
+        "sender": "Me",
+        "recipient": "Emma",
+        "value": 20
+      },
+      {
+        "sender": "Me",
+        "recipient": "Felix",
+        "value": -15
+      }
+    ]
+  },
+  {
+    "name": "Account2",
+    "balance": -20,
+    "transactions": [
+      {
+        "sender": "Me",
+        "recipient": "Yannis",
+        "value": 80
+      },
+      {
+        "sender": "Me",
+        "recipient": "Vermieter",
+        "value": 420
+      }
+    ]
+  }
+]

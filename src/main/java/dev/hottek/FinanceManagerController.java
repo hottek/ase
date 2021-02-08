@@ -1,7 +1,6 @@
 package dev.hottek;
 
-import dev.hottek.data.Account;
-import dev.hottek.data.DataHandler;
+import dev.hottek.data.model.Account;
 import dev.hottek.view.FinanceManagerWindow;
 import dev.hottek.view.OpeningWindow;
 

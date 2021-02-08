@@ -1,19 +1,16 @@
-package dev.hottek.data;
+package dev.hottek.data.model;
+
+import java.util.List;
 
 public class Account {
     private String name;
     private Float balance;
-    private IBAN iban;
+    private List<Transaction> transactions;
 
-    public Account(String name, Float balance) {
+    public Account(String name, Float balance, List<Transaction> transactions) {
         this.name = name;
         this.balance = balance;
-    }
-
-    public Account(String name, Float balance, IBAN iban) {
-        this.name = name;
-        this.balance = balance;
-        this.iban = iban;
+        this.transactions = transactions;
     }
 
     public String getName() {
@@ -30,6 +27,14 @@ public class Account {
 
     public void setBalance(Float balance) {
         this.balance = balance;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     @Override

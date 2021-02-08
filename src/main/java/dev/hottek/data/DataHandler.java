@@ -2,6 +2,7 @@ package dev.hottek.data;
 
 import dev.hottek.data.encryption.PBEModel;
 import dev.hottek.data.encryption.PasswordBasedEncryption;
+import dev.hottek.data.model.Account;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
