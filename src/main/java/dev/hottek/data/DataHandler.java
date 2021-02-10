@@ -26,7 +26,7 @@ public class DataHandler {
 
     public Account loadData(boolean renewEncryption) {
         if (renewEncryption) {
-            return new Account("lukas", 127f);
+            return new Account("lukas", 127f, null);
         }
         PBEModel pbeModel = readEncryptedFromFile();
         byte[] bytes = new byte[0];
@@ -94,7 +94,7 @@ public class DataHandler {
     private Account convertBytesToData(byte[] bytes) {
         String data = new String(bytes);
         String[] strings = data.split("\n");
-        return new Account(strings[0].substring(1), Float.parseFloat(strings[1].substring(1)));
+        return new Account(strings[0].substring(1), Float.parseFloat(strings[1].substring(1)), null);
     }
 
     private byte[] convertDataToBytes(Account account) {

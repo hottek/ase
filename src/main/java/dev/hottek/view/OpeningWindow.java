@@ -1,5 +1,7 @@
 package dev.hottek.view;
 
+import dev.hottek.data.JsonReader;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -46,6 +48,15 @@ public class OpeningWindow extends JFrame {
                     FileNameExtensionFilter filter = new FileNameExtensionFilter("Finance Manager file", "fm");
                     fileChooser.addChoosableFileFilter(filter);
                     int returnValue = fileChooser.showOpenDialog(null);
+                    switch (returnValue) {
+                        case JFileChooser.APPROVE_OPTION:
+                            String filePath = fileChooser.getSelectedFile().getPath();
+                            JsonReader jsonReader = new JsonReader();
+                            jsonReader.readJsonFromFile(filePath);
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 default:
                     break;

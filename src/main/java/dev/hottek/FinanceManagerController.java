@@ -17,7 +17,7 @@ public class FinanceManagerController {
     public void initialize() {
         this.openingWindow = new OpeningWindow();
         //Account account = dataHandler.loadData(false);
-        Account account = new Account("lukas", 127f);
+        Account account = new Account("lukas", 127f, null);
 //        financeManagerWindow.displayText(account.toString());
         //dataHandler.saveData(account);
     }
