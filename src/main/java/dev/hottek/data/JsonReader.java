@@ -11,7 +11,7 @@ import java.util.List;
 
 public class JsonReader {
 
-    private Gson gson;
+    private final Gson gson;
 
     public JsonReader() {
         this.gson = new Gson();
@@ -23,7 +23,6 @@ public class JsonReader {
                     new FileReader(filePath)
             );
             List<Account> account = Arrays.asList(gson.fromJson(bufferedReader, Account[].class));
-            System.out.println("");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
