@@ -1,5 +1,7 @@
 package dev.hottek.view;
 
+import dev.hottek.FinanceManagerController;
+import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
 import dev.hottek.data.JsonWriter;
 import dev.hottek.data.model.Account;
@@ -13,7 +15,10 @@ import java.util.List;
 
 public class OpeningWindow extends JFrame {
 
-    public OpeningWindow() throws HeadlessException {
+    private final FinanceManagerContext FMcontext;
+
+    public OpeningWindow(FinanceManagerContext FMcontext) throws HeadlessException {
+        this.FMcontext = FMcontext;
         this.setTitle("Finance Manager");
         this.setSize(600,300);
         this.setLayout(new BorderLayout());
@@ -36,6 +41,16 @@ public class OpeningWindow extends JFrame {
 
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setVisible(true);
+        this.FMcontext.setWait(true);
+    }
+
+    public FinanceManagerContext waitForInput() {
+        return this.FMcontext;
+    }
+
+    public FinanceManagerContext getInput() {
+        assert this.FMcontext.getAccountList() != null;
+        return this.FMcontext;
     }
 
     private class OpeningWindowListener implements ActionListener {
@@ -56,9 +71,11 @@ public class OpeningWindow extends JFrame {
                             String filePath = fileChooser.getSelectedFile().getPath();
                             JsonReader jsonReader = new JsonReader();
                             List<Account> accounts = jsonReader.readJsonFromFile(filePath);
-                            String dirPath = selectDir();
+                            FMcontext.setAccountList(accounts);
+                            FMcontext.setWait(false);
+                            /*String dirPath = selectDir();
                             JsonWriter jsonWriter = new JsonWriter();
-                            jsonWriter.writeToFile(accounts, dirPath);
+                            jsonWriter.writeToFile(accounts, dirPath)*/;
                             break;
                         default:
                             break;
