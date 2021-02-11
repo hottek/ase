@@ -1,12 +1,15 @@
 package dev.hottek.view;
 
 import dev.hottek.data.JsonReader;
+import dev.hottek.data.JsonWriter;
+import dev.hottek.data.model.Account;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class OpeningWindow extends JFrame {
 
@@ -52,7 +55,10 @@ public class OpeningWindow extends JFrame {
                         case JFileChooser.APPROVE_OPTION:
                             String filePath = fileChooser.getSelectedFile().getPath();
                             JsonReader jsonReader = new JsonReader();
-                            jsonReader.readJsonFromFile(filePath);
+                            List<Account> accounts = jsonReader.readJsonFromFile(filePath);
+                            String dirPath = selectDir();
+                            JsonWriter jsonWriter = new JsonWriter();
+                            jsonWriter.writeToFile(accounts, dirPath);
                             break;
                         default:
                             break;
@@ -61,6 +67,21 @@ public class OpeningWindow extends JFrame {
                 default:
                     break;
             }
+        }
+
+        private String selectDir() {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Select a Directory to save the Finance Manager file");
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            int returnValue = fileChooser.showOpenDialog(null);
+            switch (returnValue) {
+                case JFileChooser.APPROVE_OPTION:
+                    return fileChooser.getCurrentDirectory().getAbsolutePath();
+                default:
+                    break;
+            }
+            return "";
         }
     }
 }

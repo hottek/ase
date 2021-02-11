@@ -1,0 +1,1 @@
+[{"name":"Account1","balance":1234.0,"transactions":[{"sender":"Me","recipient":"Emma","value":20.0},{"sender":"Me","recipient":"Felix","value":-15.0}]},{"name":"Account2","balance":-20.0,"transactions":[{"sender":"Me","recipient":"Yannis","value":80.0},{"sender":"Me","recipient":"Vermieter","value":420.0}]}]

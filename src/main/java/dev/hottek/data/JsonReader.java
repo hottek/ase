@@ -17,14 +17,15 @@ public class JsonReader {
         this.gson = new Gson();
     }
 
-    public void readJsonFromFile(String filePath) {
+    public List<Account> readJsonFromFile(String filePath) {
         try {
             BufferedReader bufferedReader = new BufferedReader(
                     new FileReader(filePath)
             );
-            List<Account> account = Arrays.asList(gson.fromJson(bufferedReader, Account[].class));
+            return Arrays.asList(gson.fromJson(bufferedReader, Account[].class));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }
