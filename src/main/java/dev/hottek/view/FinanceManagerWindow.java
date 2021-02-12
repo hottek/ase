@@ -1,10 +1,13 @@
 package dev.hottek.view;
 
 import dev.hottek.data.DialogData;
+import dev.hottek.data.FinanceManagerContext;
+import dev.hottek.data.model.Account;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class FinanceManagerWindow extends JFrame {
     private FinanceMangerPane financeMangerPane;
@@ -36,6 +39,13 @@ public class FinanceManagerWindow extends JFrame {
     public void displayText(String text) {
         JLabel label = new JLabel(text);
         financeMangerPane.accountPanelMap.get("Account1").add(label);
+    }
+
+    public void loadDataFromContext(FinanceManagerContext FMcontext) {
+        List<Account> accounts = FMcontext.getAccountList();
+        for (Account account : accounts) {
+            this.financeMangerPane.addAccountPanel(account);
+        }
     }
 
     private class MenuItemListener implements ActionListener {

@@ -12,8 +12,9 @@ public class FinanceManagerController {
 
     public FinanceManagerController() {
         this.FMcontext = new FinanceManagerContext();
+        this.financeManagerWindow = new FinanceManagerWindow();
         //this.dataHandler = new DataHandler("asdf");
-        //this.financeManagerWindow = new FinanceManagerWindow();
+
     }
 
     public void initialize() {
@@ -26,6 +27,8 @@ public class FinanceManagerController {
             }
         }// wait for user input, then retrieve the input
         this.FMcontext = this.openingWindow.getInput();
+
+        this.financeManagerWindow.loadDataFromContext(this.FMcontext);
         //Account account = dataHandler.loadData(false);
         // Account account = new Account("lukas", 127f, null);
 //        financeManagerWindow.displayText(account.toString());
