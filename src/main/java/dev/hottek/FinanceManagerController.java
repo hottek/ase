@@ -4,6 +4,8 @@ import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.view.FinanceManagerWindow;
 import dev.hottek.view.OpeningWindow;
 
+import java.awt.event.WindowEvent;
+
 public class FinanceManagerController {
     //private final DataHandler dataHandler;
     private OpeningWindow openingWindow;
@@ -12,7 +14,6 @@ public class FinanceManagerController {
 
     public FinanceManagerController() {
         this.FMcontext = new FinanceManagerContext();
-        this.financeManagerWindow = new FinanceManagerWindow();
         //this.dataHandler = new DataHandler("asdf");
 
     }
@@ -27,7 +28,9 @@ public class FinanceManagerController {
             }
         }// wait for user input, then retrieve the input
         this.FMcontext = this.openingWindow.getInput();
+        this.openingWindow.dispose();
 
+        this.financeManagerWindow = new FinanceManagerWindow();
         this.financeManagerWindow.loadDataFromContext(this.FMcontext);
         //Account account = dataHandler.loadData(false);
         // Account account = new Account("lukas", 127f, null);
