@@ -11,13 +11,15 @@ public class AccountPanel extends JPanel {
     private final String accountName;
     private float balance;
     private List<Transaction> transactions;
+    private final GridBagConstraints gridBagConstraints;
 
     public AccountPanel(String accountName, float balance, List<Transaction> transactions) {
         this.accountName = accountName;
         this.balance = balance;
         this.transactions = transactions;
 
-        this.setLayout(new BorderLayout());
+        this.gridBagConstraints = new GridBagConstraints();
+        this.setLayout(new GridBagLayout());
 
         displayAccountData();
     }
@@ -25,9 +27,13 @@ public class AccountPanel extends JPanel {
     private void displayAccountData() {
         JLabel balanceLabel = new JLabel("Current account balance: " + this.balance);
         List<JPanel> transactionPanels = constructTransactionLabels();
-        this.add(balanceLabel, BorderLayout.NORTH);
+        int yLevel = 0;
+        this.gridBagConstraints.gridy = yLevel;
+        this.add(balanceLabel, this.gridBagConstraints);
         for (JPanel transactionPanel : transactionPanels) {
-            this.add(transactionPanel, BorderLayout.AFTER_LINE_ENDS);
+            yLevel++;
+            this.gridBagConstraints.gridy = yLevel;
+            this.add(transactionPanel, this.gridBagConstraints);
         }
     }
 
