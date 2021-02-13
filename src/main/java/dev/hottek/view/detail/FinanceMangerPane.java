@@ -23,7 +23,7 @@ public class FinanceMangerPane extends JTabbedPane {
 
     public void addAccountPanel(Account account) {
         String panelName = account.getName();
-        AccountPanel accountPanel = new AccountPanel(panelName);
+        AccountPanel accountPanel = new AccountPanel(panelName, account.getBalance(), account.getTransactions());
         this.accountPanelMap.put(panelName, accountPanel);
         this.add(panelName, accountPanel);
     }
