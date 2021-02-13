@@ -11,7 +11,7 @@ import java.awt.event.*;
 import java.util.List;
 
 public class FinanceManagerWindow extends JFrame {
-    private FinanceMangerPane financeMangerPane;
+    private final FinanceMangerPane financeMangerPane;
     public FinanceManagerWindow() throws HeadlessException {
         this.setTitle("Finance Manager");
         this.setSize(600,600);
@@ -68,7 +68,7 @@ public class FinanceManagerWindow extends JFrame {
             CreateAccountDialog accountDialog = new CreateAccountDialog();
             DialogData data = accountDialog.showDialog();
             if (data.getResult() == 0) {
-                financeMangerPane.addAccountPanel(data.getData().getFirst());
+                financeMangerPane.addAccountPanel(data);
             }
         }
     }

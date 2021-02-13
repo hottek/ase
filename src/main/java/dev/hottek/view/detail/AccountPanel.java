@@ -39,16 +39,18 @@ public class AccountPanel extends JPanel {
 
     private List<JPanel> constructTransactionLabels() {
         List<JPanel> panels = new ArrayList<>();
-        for (Transaction transaction : this.transactions) {
-            JLabel senderLabel = new JLabel("Sender: " + transaction.getSender());
-            JLabel recipientLabel = new JLabel("Recipient: " + transaction.getRecipient());
-            JLabel valueLabel = new JLabel("Value: " + transaction.getValue());
-            JPanel panel = new JPanel(new BorderLayout());
-            panel.add(senderLabel, BorderLayout.WEST);
-            panel.add(recipientLabel, BorderLayout.EAST);
-            panel.add(valueLabel, BorderLayout.SOUTH);
-            panels.add(panel);
-        }
+        try {
+            for (Transaction transaction : this.transactions) {
+                JLabel senderLabel = new JLabel("Sender: " + transaction.getSender());
+                JLabel recipientLabel = new JLabel("Recipient: " + transaction.getRecipient());
+                JLabel valueLabel = new JLabel("Value: " + transaction.getValue());
+                JPanel panel = new JPanel(new BorderLayout());
+                panel.add(senderLabel, BorderLayout.WEST);
+                panel.add(recipientLabel, BorderLayout.EAST);
+                panel.add(valueLabel, BorderLayout.SOUTH);
+                panels.add(panel);
+            }
+        } catch (NullPointerException ignored) { }
         return panels;
     }
 
