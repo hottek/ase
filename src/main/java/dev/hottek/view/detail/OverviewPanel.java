@@ -1,4 +1,4 @@
-package dev.hottek.view;
+package dev.hottek.view.detail;
 
 import javax.swing.*;
 

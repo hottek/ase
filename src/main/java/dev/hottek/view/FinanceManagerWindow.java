@@ -3,6 +3,7 @@ package dev.hottek.view;
 import dev.hottek.data.DialogData;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.model.Account;
+import dev.hottek.view.detail.FinanceMangerPane;
 
 import javax.swing.*;
 import java.awt.*;
