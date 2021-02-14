@@ -30,8 +30,9 @@ public class FinanceMangerPane extends JTabbedPane {
         this.add(panelName, accountPanel);
     }
 
-    public void addAccountPanel(DialogData dialogData) {
+    public Account addAccountPanel(DialogData dialogData) {
         Account newAccount = new Account(dialogData.getData().getFirst(), 0f, null);
         addAccountPanel(newAccount);
+        return newAccount;
     }
 }

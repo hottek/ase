@@ -70,7 +70,8 @@ public class FinanceManagerWindow extends JFrame {
             CreateAccountDialog accountDialog = new CreateAccountDialog();
             DialogData data = accountDialog.showDialog("Create new Account");
             if (data.getResult() == 0) {
-                financeMangerPane.addAccountPanel(data);
+                Account newAccount = financeMangerPane.addAccountPanel(data);
+                FMcontext.addAccount(newAccount);
             }
         }
 
