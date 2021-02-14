@@ -18,7 +18,7 @@ public class JsonWriter {
     }
 
     public void writeToFile(List<Account> accounts, String directoryPath) {
-        String filePath = directoryPath + "test1.fm";
+        String filePath = directoryPath + "\\test1.fm";
         Writer writer = null;
         try {
             writer = Files.newBufferedWriter(Paths.get(filePath));

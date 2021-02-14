@@ -2,6 +2,7 @@ package dev.hottek.view;
 
 import dev.hottek.data.DialogData;
 import dev.hottek.data.FinanceManagerContext;
+import dev.hottek.data.JsonWriter;
 import dev.hottek.data.model.Account;
 import dev.hottek.view.detail.FinanceMangerPane;
 
@@ -11,7 +12,10 @@ import java.awt.event.*;
 import java.util.List;
 
 public class FinanceManagerWindow extends JFrame {
+
     private final FinanceMangerPane financeMangerPane;
+    private FinanceManagerContext FMcontext;
+
     public FinanceManagerWindow() throws HeadlessException {
         this.setTitle("Finance Manager");
         this.setSize(600,600);
@@ -37,12 +41,8 @@ public class FinanceManagerWindow extends JFrame {
         this.setVisible(true);
     }
 
-    public void displayText(String text) {
-        JLabel label = new JLabel(text);
-        financeMangerPane.accountPanelMap.get("Account1").add(label);
-    }
-
     public void loadDataFromContext(FinanceManagerContext FMcontext) {
+        this.FMcontext = FMcontext;
         List<Account> accounts = FMcontext.getAccountList();
         for (Account account : accounts) {
             this.financeMangerPane.addAccountPanel(account);
@@ -54,6 +54,7 @@ public class FinanceManagerWindow extends JFrame {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
                 case "save":
+                    saveCurrentContext();
                     break;
                 case "add-account":
                     newAccountPanel();
@@ -70,6 +71,28 @@ public class FinanceManagerWindow extends JFrame {
             if (data.getResult() == 0) {
                 financeMangerPane.addAccountPanel(data);
             }
+        }
+
+        private void saveCurrentContext() {
+            List<Account> accounts = FMcontext.getAccountList();
+            String dirPath = selectDir();
+            JsonWriter jsonWriter = new JsonWriter();
+            jsonWriter.writeToFile(accounts, dirPath);
+        }
+
+        private String selectDir() {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Select a Directory to save the Finance Manager file");
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            int returnValue = fileChooser.showOpenDialog(null);
+            switch (returnValue) {
+                case JFileChooser.APPROVE_OPTION:
+                    return fileChooser.getCurrentDirectory().getAbsolutePath();
+                default:
+                    break;
+            }
+            return null;
         }
     }
 }

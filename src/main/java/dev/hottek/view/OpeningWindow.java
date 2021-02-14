@@ -85,20 +85,5 @@ public class OpeningWindow extends JFrame {
                     break;
             }
         }
-
-        private String selectDir() {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Select a Directory to save the Finance Manager file");
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fileChooser.setAcceptAllFileFilterUsed(false);
-            int returnValue = fileChooser.showOpenDialog(null);
-            switch (returnValue) {
-                case JFileChooser.APPROVE_OPTION:
-                    return fileChooser.getCurrentDirectory().getAbsolutePath();
-                default:
-                    break;
-            }
-            return "";
-        }
     }
 }
