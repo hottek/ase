@@ -1,6 +1,7 @@
 package dev.hottek.view;
 
 import dev.hottek.FinanceManagerController;
+import dev.hottek.data.DialogData;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
 import dev.hottek.data.JsonWriter;
@@ -11,6 +12,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 import java.util.List;
 
 public class OpeningWindow extends JFrame {
@@ -58,6 +60,13 @@ public class OpeningWindow extends JFrame {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
                 case "new":
+                    CreateAccountDialog accountDialog = new CreateAccountDialog();
+                    DialogData data = accountDialog.showDialog("Enter the name of the first account");
+                    Account initialAccount = new Account(data.getData().getFirst(), 0.0f, null);
+                    List<Account> initialAccounts = new LinkedList<>();
+                    initialAccounts.add(initialAccount);
+                    FMcontext.setAccountList(initialAccounts);
+                    FMcontext.setWait(false);
                     break;
                 case "open":
                     JFileChooser fileChooser = new JFileChooser();

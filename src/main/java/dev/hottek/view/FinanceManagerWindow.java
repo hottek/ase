@@ -67,7 +67,7 @@ public class FinanceManagerWindow extends JFrame {
         private void newAccountPanel() {
             // TODO: Add Dialog to create new account or different type which is displayed in the panel
             CreateAccountDialog accountDialog = new CreateAccountDialog();
-            DialogData data = accountDialog.showDialog();
+            DialogData data = accountDialog.showDialog("Create new Account");
             if (data.getResult() == 0) {
                 financeMangerPane.addAccountPanel(data);
             }

@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class CreateAccountDialog extends JPanel {
 
-    JTextField accountNameInput;
+    private JTextField accountNameInput;
 
     public CreateAccountDialog() {
         this.add(new JLabel("Enter Name of the new Account:"));
@@ -15,9 +15,9 @@ public class CreateAccountDialog extends JPanel {
         this.add(accountNameInput);
     }
 
-    public DialogData showDialog() {
+    public DialogData showDialog(String title) {
         int result = JOptionPane.showConfirmDialog(null, this,
-                "Create new Account", JOptionPane.OK_CANCEL_OPTION);
+                title, JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             return new DialogData(0, getDataAsArray());
         }
