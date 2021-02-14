@@ -73,9 +73,6 @@ public class OpeningWindow extends JFrame {
                             List<Account> accounts = jsonReader.readJsonFromFile(filePath);
                             FMcontext.setAccountList(accounts);
                             FMcontext.setWait(false);
-                            /*String dirPath = selectDir();
-                            JsonWriter jsonWriter = new JsonWriter();
-                            jsonWriter.writeToFile(accounts, dirPath)*/;
                             break;
                         default:
                             break;
