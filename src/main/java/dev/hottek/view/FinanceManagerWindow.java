@@ -8,7 +8,8 @@ import dev.hottek.view.detail.FinanceMangerPane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class FinanceManagerWindow extends JFrame {
@@ -18,7 +19,7 @@ public class FinanceManagerWindow extends JFrame {
 
     public FinanceManagerWindow() throws HeadlessException {
         this.setTitle("Finance Manager");
-        this.setSize(600,600);
+        this.setSize(600, 600);
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
         JMenuItem fSave = new JMenuItem("Save");

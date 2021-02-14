@@ -4,34 +4,30 @@ import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.view.FinanceManagerWindow;
 import dev.hottek.view.OpeningWindow;
 
-import java.awt.event.WindowEvent;
-
-public class FinanceManagerController {
-    //private final DataHandler dataHandler;
-    private OpeningWindow openingWindow;
-    private FinanceManagerWindow financeManagerWindow;
+class FinanceManagerController {
     private FinanceManagerContext FMcontext;
 
-    public FinanceManagerController() {
+    FinanceManagerController() {
         this.FMcontext = new FinanceManagerContext();
         //this.dataHandler = new DataHandler("asdf");
 
     }
 
-    public void initialize() {
-        this.openingWindow = new OpeningWindow(this.FMcontext);
-        while (this.openingWindow.waitForInput().isWait()) {
+    void initialize() {
+        //private final DataHandler dataHandler;
+        OpeningWindow openingWindow = new OpeningWindow(this.FMcontext);
+        while (openingWindow.waitForInput().isWait()) {
             try {
                 Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }// wait for user input, then retrieve the input
-        this.FMcontext = this.openingWindow.getInput();
-        this.openingWindow.dispose();
+        this.FMcontext = openingWindow.getInput();
+        openingWindow.dispose();
 
-        this.financeManagerWindow = new FinanceManagerWindow();
-        this.financeManagerWindow.loadDataFromContext(this.FMcontext);
+        FinanceManagerWindow financeManagerWindow = new FinanceManagerWindow();
+        financeManagerWindow.loadDataFromContext(this.FMcontext);
         //Account account = dataHandler.loadData(false);
         // Account account = new Account("lukas", 127f, null);
 //        financeManagerWindow.displayText(account.toString());

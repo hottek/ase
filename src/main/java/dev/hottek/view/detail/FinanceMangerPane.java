@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FinanceMangerPane extends JTabbedPane {
-    public Map<String, JPanel> accountPanelMap;
+    private Map<String, JPanel> accountPanelMap;
+
     public FinanceMangerPane() {
-        this.setBounds(50,50,200,200);
+        this.setBounds(50, 50, 200, 200);
         this.accountPanelMap = new HashMap<>();
         addOverviewPanel();
     }

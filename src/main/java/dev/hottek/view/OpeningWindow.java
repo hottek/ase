@@ -1,10 +1,8 @@
 package dev.hottek.view;
 
-import dev.hottek.FinanceManagerController;
 import dev.hottek.data.DialogData;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
-import dev.hottek.data.JsonWriter;
 import dev.hottek.data.model.Account;
 
 import javax.swing.*;
@@ -22,7 +20,7 @@ public class OpeningWindow extends JFrame {
     public OpeningWindow(FinanceManagerContext FMcontext) throws HeadlessException {
         this.FMcontext = FMcontext;
         this.setTitle("Finance Manager");
-        this.setSize(600,300);
+        this.setSize(600, 300);
         this.setLayout(new BorderLayout());
         this.add(new JLabel("Please select a existing Finance Manager file or create a new one"), BorderLayout.CENTER);
 
@@ -75,7 +73,7 @@ public class OpeningWindow extends JFrame {
                     FileNameExtensionFilter filter = new FileNameExtensionFilter("Finance Manager file", "fm");
                     fileChooser.addChoosableFileFilter(filter);
                     int returnValue = fileChooser.showOpenDialog(null);
-                    switch (returnValue) {
+                    switch (returnValue) { //TODO: Handle other returnValues
                         case JFileChooser.APPROVE_OPTION:
                             String filePath = fileChooser.getSelectedFile().getPath();
                             JsonReader jsonReader = new JsonReader();
