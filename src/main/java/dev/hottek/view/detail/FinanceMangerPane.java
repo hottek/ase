@@ -1,6 +1,5 @@
 package dev.hottek.view.detail;
 
-import dev.hottek.data.DialogData;
 import dev.hottek.data.model.Account;
 
 import javax.swing.*;
@@ -30,9 +29,4 @@ public class FinanceMangerPane extends JTabbedPane {
         this.add(panelName, accountPanel);
     }
 
-    public Account addAccountPanel(DialogData dialogData) {
-        Account newAccount = new Account(dialogData.getData().getFirst(), 0f, null);
-        addAccountPanel(newAccount);
-        return newAccount;
-    }
 }

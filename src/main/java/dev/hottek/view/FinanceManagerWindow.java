@@ -1,6 +1,5 @@
 package dev.hottek.view;
 
-import dev.hottek.data.DialogData;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonWriter;
 import dev.hottek.data.model.Account;
@@ -68,9 +67,9 @@ public class FinanceManagerWindow extends JFrame {
         private void newAccountPanel() {
             // TODO: Add Dialog to create new account or different type which is displayed in the panel
             CreateAccountDialog accountDialog = new CreateAccountDialog();
-            DialogData data = accountDialog.showDialog("Create new Account");
-            if (data.getResult() == 0) {
-                Account newAccount = financeMangerPane.addAccountPanel(data);
+            Account newAccount = accountDialog.showDialog("Create new Account");
+            if (newAccount != null) {
+                financeMangerPane.addAccountPanel(newAccount);
                 FMcontext.addAccount(newAccount);
             }
         }

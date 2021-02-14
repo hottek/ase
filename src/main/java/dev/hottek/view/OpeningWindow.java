@@ -1,6 +1,5 @@
 package dev.hottek.view;
 
-import dev.hottek.data.DialogData;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
 import dev.hottek.data.model.Account;
@@ -59,8 +58,7 @@ public class OpeningWindow extends JFrame {
             switch (e.getActionCommand()) {
                 case "new":
                     CreateAccountDialog accountDialog = new CreateAccountDialog();
-                    DialogData data = accountDialog.showDialog("Enter the name of the first account");
-                    Account initialAccount = new Account(data.getData().getFirst(), 0.0f, null);
+                    Account initialAccount = accountDialog.showDialog("Enter the name of the first account");
                     List<Account> initialAccounts = new LinkedList<>();
                     initialAccounts.add(initialAccount);
                     FMcontext.setAccountList(initialAccounts);
