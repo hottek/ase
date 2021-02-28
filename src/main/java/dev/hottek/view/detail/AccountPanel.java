@@ -19,22 +19,31 @@ public class AccountPanel extends JPanel {
         this.transactions = transactions;
 
         this.gridBagConstraints = new GridBagConstraints();
-        this.setLayout(new GridBagLayout());
+        this.setLayout(new BorderLayout());
 
         displayAccountData();
     }
 
     private void displayAccountData() {
+        JPanel balancePanel = new JPanel();
         JLabel balanceLabel = new JLabel("Current account balance: " + this.balance);
+        balancePanel.add(balanceLabel);
+
+        JPanel panelOfTransactions = new JPanel(new GridBagLayout());
+        JLabel transactionLabel = new JLabel("Transactions:");
         List<JPanel> transactionPanels = constructTransactionLabels();
         int yLevel = 0;
         this.gridBagConstraints.gridy = yLevel;
-        this.add(balanceLabel, this.gridBagConstraints);
+        panelOfTransactions.add(transactionLabel, this.gridBagConstraints);
+        yLevel++;
         for (JPanel transactionPanel : transactionPanels) {
             yLevel++;
             this.gridBagConstraints.gridy = yLevel;
-            this.add(transactionPanel, this.gridBagConstraints);
+            panelOfTransactions.add(transactionPanel, this.gridBagConstraints);
         }
+
+        this.add(balancePanel, BorderLayout.WEST);
+        this.add(panelOfTransactions, BorderLayout.EAST);
     }
 
     private List<JPanel> constructTransactionLabels() {
@@ -44,10 +53,12 @@ public class AccountPanel extends JPanel {
                 JLabel senderLabel = new JLabel("Sender: " + transaction.getSender());
                 JLabel recipientLabel = new JLabel("Recipient: " + transaction.getRecipient());
                 JLabel valueLabel = new JLabel("Value: " + transaction.getValue());
+                JPanel leftDetailPanel = new JPanel(new BorderLayout());
                 JPanel panel = new JPanel(new BorderLayout());
-                panel.add(senderLabel, BorderLayout.WEST);
-                panel.add(recipientLabel, BorderLayout.EAST);
-                panel.add(valueLabel, BorderLayout.SOUTH);
+                leftDetailPanel.add(senderLabel, BorderLayout.NORTH);
+                leftDetailPanel.add(recipientLabel, BorderLayout.SOUTH);
+                panel.add(leftDetailPanel, BorderLayout.WEST);
+                panel.add(valueLabel, BorderLayout.EAST);
                 panels.add(panel);
             }
         } catch (NullPointerException ignored) { }
