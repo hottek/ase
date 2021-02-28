@@ -30,11 +30,10 @@ public class AccountPanel extends JPanel {
         balancePanel.add(balanceLabel);
 
         JPanel panelOfTransactions = new JPanel(new GridBagLayout());
-        JLabel transactionLabel = new JLabel("Transactions:");
+        panelOfTransactions.setBorder(BorderFactory.createTitledBorder("Transactions"));
         List<JPanel> transactionPanels = constructTransactionLabels();
         int yLevel = 0;
         this.gridBagConstraints.gridy = yLevel;
-        panelOfTransactions.add(transactionLabel, this.gridBagConstraints);
         yLevel++;
         for (JPanel transactionPanel : transactionPanels) {
             yLevel++;
