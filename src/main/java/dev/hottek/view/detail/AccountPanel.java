@@ -4,67 +4,63 @@ import dev.hottek.data.model.Transaction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class AccountPanel extends JPanel {
     private final String accountName;
     private float balance;
     private List<Transaction> transactions;
-    private final GridBagConstraints gridBagConstraints;
+    private final Field[] fields;
 
     public AccountPanel(String accountName, float balance, List<Transaction> transactions) {
         this.accountName = accountName;
         this.balance = balance;
         this.transactions = transactions;
 
-        this.gridBagConstraints = new GridBagConstraints();
+        this.fields = Transaction.class.getDeclaredFields();
         this.setLayout(new BorderLayout());
 
         displayAccountData();
     }
 
     private void displayAccountData() {
-        JPanel balancePanel = new JPanel();
+        JPanel topPanel = new JPanel();
+        topPanel.setBorder(BorderFactory.createTitledBorder("Account Overview"));
         JLabel balanceLabel = new JLabel("Current account balance: " + this.balance);
-        balancePanel.add(balanceLabel);
+        topPanel.add(balanceLabel);
 
-        JPanel panelOfTransactions = new JPanel(new GridBagLayout());
-        panelOfTransactions.setBorder(BorderFactory.createTitledBorder("Transactions"));
-        List<JPanel> transactionPanels = constructTransactionLabels();
-        int yLevel = 0;
-        this.gridBagConstraints.gridy = yLevel;
-        yLevel++;
-        for (JPanel transactionPanel : transactionPanels) {
-            yLevel++;
-            this.gridBagConstraints.gridy = yLevel;
-            panelOfTransactions.add(transactionPanel, this.gridBagConstraints);
+        JPanel bottomPanel = new JPanel(new GridBagLayout());
+        bottomPanel.setBorder(BorderFactory.createTitledBorder("Transactions"));
+
+        String[] columnNames = getColumnNames();
+        Object[][] tableData = getTableData();
+        JTable transactionTable = new JTable(tableData, columnNames);
+        bottomPanel.add(transactionTable);
+
+        this.add(topPanel, BorderLayout.NORTH);
+        this.add(bottomPanel, BorderLayout.SOUTH);
+    }
+
+    private Object[][] getTableData() {
+        int numberOfTransactions = transactions.size();
+        int numberOfFields = fields.length;
+        Object[][] tableData = new Object[numberOfTransactions][numberOfFields];
+        for (int transaction = 0; transaction < numberOfTransactions; transaction++) {
+            Transaction currentTransaction = transactions.get(transaction);
+            Object[] values = currentTransaction.getValuesOfAllFields();
+            tableData[transaction] = values;
         }
-
-        this.add(balancePanel, BorderLayout.WEST);
-        this.add(panelOfTransactions, BorderLayout.EAST);
+        return tableData;
     }
 
-    private List<JPanel> constructTransactionLabels() {
-        List<JPanel> panels = new ArrayList<>();
-        try {
-            for (Transaction transaction : this.transactions) {
-                JLabel senderLabel = new JLabel("Sender: " + transaction.getSender());
-                JLabel recipientLabel = new JLabel("Recipient: " + transaction.getRecipient());
-                JLabel valueLabel = new JLabel("Value: " + transaction.getValue());
-                JPanel leftDetailPanel = new JPanel(new BorderLayout());
-                JPanel panel = new JPanel(new BorderLayout());
-                leftDetailPanel.add(senderLabel, BorderLayout.NORTH);
-                leftDetailPanel.add(recipientLabel, BorderLayout.SOUTH);
-                panel.add(leftDetailPanel, BorderLayout.WEST);
-                panel.add(valueLabel, BorderLayout.EAST);
-                panels.add(panel);
-            }
-        } catch (NullPointerException ignored) { }
-        return panels;
-    }
-
-    public String getAccountName() {
-        return accountName;
+    private String[] getColumnNames() {
+        String[] columnNames = new String[fields.length];
+        for (int i = 0; i < fields.length; i++) {
+            String fieldName = fields[i].getName();
+            fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+            columnNames[i] = fieldName;
+        }
+        return columnNames;
     }
 }
