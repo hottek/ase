@@ -2,6 +2,7 @@ package dev.hottek.data.model;
 
 public class Transaction {
 
+    //TODO: Add Datum, remove recipient, change sender to Empfänger / Zahlungspflichtiger
     private String sender;
     private String recipient;
     private Float value;
