@@ -1,5 +1,6 @@
 package dev.hottek.view;
 
+import dev.hottek.data.DataHandler;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonWriter;
 import dev.hottek.data.model.Account;
@@ -79,10 +80,21 @@ public class FinanceManagerWindow extends JFrame {
         }
 
         private void saveCurrentContext() {
-            List<Account> accounts = FMcontext.getAccountList();
-            String dirPath = selectDir();
             JsonWriter jsonWriter = new JsonWriter();
-            jsonWriter.writeToFile(accounts, dirPath);
+            List<Account> accounts = FMcontext.getAccountList();
+            String dirPath = selectDir(); //TODO: Fix selectDir, currently the returned path is one level higher than the selected dir
+            String fileName = retrieveFileName();
+            String completeFilePath = dirPath + "\\" + fileName;
+            if (checkForPasswordProtection()) {
+                String accountsAsJson = jsonWriter.writeToString(accounts);
+                String password = retrievePassword();
+                String filePath = completeFilePath + "_encrypted.fm";
+                String ivFilePath = completeFilePath + "_encrypted_iv.fm";
+                DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
+                dataHandler.saveData(accountsAsJson);
+                return;
+            }
+            jsonWriter.writeToFile(accounts, completeFilePath + ".fm");
         }
 
         private String selectDir() {
@@ -98,6 +110,19 @@ public class FinanceManagerWindow extends JFrame {
                     break;
             }
             return null;
+        }
+
+        private boolean checkForPasswordProtection() {
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to encrypt this file with a password?", "Password Protection" , JOptionPane.YES_NO_OPTION);
+            return result == JOptionPane.YES_OPTION;
+        }
+
+        private String retrievePassword() {
+            return JOptionPane.showInputDialog("Enter the password:");
+        }
+
+        private String retrieveFileName() {
+            return JOptionPane.showInputDialog("Enter the name of the file:");
         }
     }
 }

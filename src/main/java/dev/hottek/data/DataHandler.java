@@ -14,20 +14,17 @@ import java.util.ArrayList;
 
 
 public class DataHandler {
-    private final String ciphertextFilePath;
+    private final String cipherTextFilePath;
     private final String ivFilePath;
     private final PasswordBasedEncryption passwordBasedEncryption;
 
-    public DataHandler(String password) {
-        this.ciphertextFilePath = "test.fm";
-        this.ivFilePath = "iv.fm";
+    public DataHandler(String password, String cipherTextFilePath, String ivFilePath) {
+        this.cipherTextFilePath = cipherTextFilePath;
+        this.ivFilePath = ivFilePath;
         this.passwordBasedEncryption = new PasswordBasedEncryption(password.toCharArray());
     }
 
-    public Account loadData(boolean renewEncryption) {
-        if (renewEncryption) {
-            return new Account("lukas", 127f, null);
-        }
+    public String loadData() {
         PBEModel pbeModel = readEncryptedFromFile();
         byte[] bytes = new byte[0];
         try {
@@ -35,14 +32,14 @@ public class DataHandler {
         } catch (InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
             e.printStackTrace();
         }
-        return convertBytesToData(bytes);
+        return new String(bytes);
     }
 
-    public void saveData(Account account) {
-        byte[] accountBytes = convertDataToBytes(account);
+    public void saveData(String data) {
+        byte[] dataBytes = data.getBytes();
         PBEModel pbeModel = null;
         try {
-            pbeModel = passwordBasedEncryption.encrypt(accountBytes);
+            pbeModel = passwordBasedEncryption.encrypt(dataBytes);
         } catch (InvalidKeyException | InvalidParameterSpecException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
@@ -53,7 +50,7 @@ public class DataHandler {
     private PBEModel readEncryptedFromFile() {
         PBEModel pbeModel = null;
         try {
-            InputStream ciphertextInputStream = new FileInputStream(ciphertextFilePath);
+            InputStream ciphertextInputStream = new FileInputStream(cipherTextFilePath);
             InputStream ivInputStream = new FileInputStream(ivFilePath);
             byte[] ciphertextBytes = readBytesFromInputStream(ciphertextInputStream);
             byte[] ivBytes = readBytesFromInputStream(ivInputStream);
@@ -68,10 +65,12 @@ public class DataHandler {
         byte[] ciphertextBytes = pbeModel.getCiphertext();
         byte[] ivBytes = pbeModel.getIv();
         try {
-            OutputStream ciphertextOutputStream = new FileOutputStream(ciphertextFilePath);
+            OutputStream ciphertextOutputStream = new FileOutputStream(cipherTextFilePath);
             OutputStream ivOutputStream = new FileOutputStream(ivFilePath);
             ciphertextOutputStream.write(ciphertextBytes);
             ivOutputStream.write(ivBytes);
+            ciphertextOutputStream.close();
+            ivOutputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -89,17 +88,6 @@ public class DataHandler {
         }
         Byte[] bufferWithoutZeros = reduceBuffer(buffer);
         return toPrimitives(bufferWithoutZeros);
-    }
-
-    private Account convertBytesToData(byte[] bytes) {
-        String data = new String(bytes);
-        String[] strings = data.split("\n");
-        return new Account(strings[0].substring(1), Float.parseFloat(strings[1].substring(1)), null);
-    }
-
-    private byte[] convertDataToBytes(Account account) {
-        String accountString = "n" + account.getName() + "\nb" + account.getBalance();
-        return accountString.getBytes();
     }
 
     private Byte[] reduceBuffer(byte[] buffer) {

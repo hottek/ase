@@ -1,5 +1,6 @@
 package dev.hottek.view;
 
+import dev.hottek.data.DataHandler;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
 import dev.hottek.data.model.Account;
@@ -73,12 +74,20 @@ public class OpeningWindow extends JFrame {
                     int returnValue = fileChooser.showOpenDialog(null);
                     switch (returnValue) { //TODO: Handle other returnValues
                         case JFileChooser.APPROVE_OPTION:
+                            String filePath = fileChooser.getSelectedFile().getPath();
+                            String filePathWithoutFileType = filePath.split("\\.")[0];
+                            String ivFilePath = filePathWithoutFileType + "_iv.fm";
+                            JsonReader jsonReader = new JsonReader();
                             boolean isPasswordProtected = checkForPasswordProtection();
                             if (isPasswordProtected) {
                                 String password = retrievePassword();
+                                DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
+                                String data = dataHandler.loadData();
+                                List<Account> accounts = jsonReader.readJsonFromString(data);
+                                FMcontext.setAccountList(accounts);
+                                FMcontext.setWait(false);
+                                break;
                             }
-                            String filePath = fileChooser.getSelectedFile().getPath();
-                            JsonReader jsonReader = new JsonReader();
                             List<Account> accounts = jsonReader.readJsonFromFile(filePath);
                             FMcontext.setAccountList(accounts);
                             FMcontext.setWait(false);
@@ -97,7 +106,7 @@ public class OpeningWindow extends JFrame {
         }
 
         private boolean checkForPasswordProtection() {
-            int result = JOptionPane.showConfirmDialog(null, "Is this file password protected? (file has suffix: _encrypted)", "Is file password protected?" , JOptionPane.YES_NO_OPTION);
+            int result = JOptionPane.showConfirmDialog(null, "Is file password protected? (file has suffix: _encrypted)", "Password Protection" , JOptionPane.YES_NO_OPTION);
             return result == JOptionPane.YES_OPTION;
         }
     }

@@ -17,8 +17,7 @@ public class JsonWriter {
         this.gson = new Gson();
     }
 
-    public void writeToFile(List<Account> accounts, String directoryPath) {
-        String filePath = directoryPath + "\\test1.fm";
+    public void writeToFile(List<Account> accounts, String filePath) {
         Writer writer = null;
         try {
             writer = Files.newBufferedWriter(Paths.get(filePath));
@@ -27,5 +26,9 @@ public class JsonWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String writeToString(List<Account> accounts) {
+        return gson.toJson(accounts);
     }
 }
