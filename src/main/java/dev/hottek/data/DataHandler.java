@@ -30,7 +30,7 @@ public class DataHandler {
         try {
             bytes = passwordBasedEncryption.decrypt(pbeModel);
         } catch (InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
+            e.printStackTrace(); //TODO: communicate to user if e.g. password was incorrect, maybe through different exception
         }
         return new String(bytes);
     }
