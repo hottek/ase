@@ -9,12 +9,9 @@ class FinanceManagerController {
 
     FinanceManagerController() {
         this.FMcontext = new FinanceManagerContext();
-        //this.dataHandler = new DataHandler("asdf");
-
     }
 
     void initialize() {
-        //private final DataHandler dataHandler;
         OpeningWindow openingWindow = new OpeningWindow(this.FMcontext);
         waitForInput(openingWindow);
         this.FMcontext = openingWindow.getInput();
@@ -22,10 +19,6 @@ class FinanceManagerController {
 
         FinanceManagerWindow financeManagerWindow = new FinanceManagerWindow();
         financeManagerWindow.loadDataFromContext(this.FMcontext);
-        //Account account = dataHandler.loadData(false);
-        // Account account = new Account("lukas", 127f, null);
-//        financeManagerWindow.displayText(account.toString());
-        //dataHandler.saveData(account);
     }
 
     private void waitForInput(OpeningWindow openingWindow) {
