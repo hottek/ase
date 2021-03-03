@@ -16,13 +16,7 @@ class FinanceManagerController {
     void initialize() {
         //private final DataHandler dataHandler;
         OpeningWindow openingWindow = new OpeningWindow(this.FMcontext);
-        while (openingWindow.waitForInput().isWait()) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }// wait for user input, then retrieve the input
+        waitForInput(openingWindow);
         this.FMcontext = openingWindow.getInput();
         openingWindow.dispose();
 
@@ -32,5 +26,15 @@ class FinanceManagerController {
         // Account account = new Account("lukas", 127f, null);
 //        financeManagerWindow.displayText(account.toString());
         //dataHandler.saveData(account);
+    }
+
+    private void waitForInput(OpeningWindow openingWindow) {
+        while (openingWindow.waitForInput().isWait()) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
