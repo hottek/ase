@@ -46,11 +46,7 @@ public class FinanceManagerWindow extends JFrame {
         this.FMcontext = FMcontext;
         List<Account> accounts = FMcontext.getAccountList();
         for (Account account : accounts) {
-            try {
-                this.financeMangerPane.addAccountPanel(account);
-            } catch (NullPointerException ignored) {
-                // No accounts in current FMcontext
-            }
+            this.financeMangerPane.addAccountPanel(account);
         }
     }
 
