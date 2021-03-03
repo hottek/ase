@@ -56,7 +56,7 @@ public class OpeningWindow extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
-                case "new":
+                case "new": //TODO: Force user to enter an account name
                     CreateAccountDialog accountDialog = new CreateAccountDialog();
                     Account initialAccount = accountDialog.showDialog("Enter the name of the first account");
                     List<Account> initialAccounts = new LinkedList<>();
