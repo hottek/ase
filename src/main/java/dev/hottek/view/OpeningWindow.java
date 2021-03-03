@@ -19,7 +19,7 @@ public class OpeningWindow extends JFrame {
     public OpeningWindow(FinanceManagerContext FMcontext) throws HeadlessException {
         this.FMcontext = FMcontext;
         this.setTitle("Finance Manager");
-        this.setSize(600, 300);
+        this.setSize(300, 300);
         this.setLayout(new BorderLayout());
         this.add(new JLabel("Please select a existing Finance Manager file or create a new one"), BorderLayout.CENTER);
 
