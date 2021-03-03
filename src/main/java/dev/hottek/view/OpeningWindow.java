@@ -73,6 +73,10 @@ public class OpeningWindow extends JFrame {
                     int returnValue = fileChooser.showOpenDialog(null);
                     switch (returnValue) { //TODO: Handle other returnValues
                         case JFileChooser.APPROVE_OPTION:
+                            boolean isPasswordProtected = checkForPasswordProtection();
+                            if (isPasswordProtected) {
+                                String password = retrievePassword();
+                            }
                             String filePath = fileChooser.getSelectedFile().getPath();
                             JsonReader jsonReader = new JsonReader();
                             List<Account> accounts = jsonReader.readJsonFromFile(filePath);
@@ -86,6 +90,15 @@ public class OpeningWindow extends JFrame {
                 default:
                     break;
             }
+        }
+
+        private String retrievePassword() {
+            return JOptionPane.showInputDialog("Enter the password:");
+        }
+
+        private boolean checkForPasswordProtection() {
+            int result = JOptionPane.showConfirmDialog(null, "Is this file password protected? (file has suffix: _encrypted)", "Is file password protected?" , JOptionPane.YES_NO_OPTION);
+            return result == JOptionPane.YES_OPTION;
         }
     }
 }
