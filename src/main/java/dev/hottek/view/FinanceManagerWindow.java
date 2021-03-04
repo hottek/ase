@@ -50,7 +50,7 @@ public class FinanceManagerWindow extends JFrame {
         }
     }
 
-    private class MenuItemListener implements ActionListener {
+    private class MenuItemListener implements ActionListener { //TODO: create class in listener package
         @Override
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()) {
