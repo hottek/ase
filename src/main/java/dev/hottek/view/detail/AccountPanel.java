@@ -1,6 +1,7 @@
 package dev.hottek.view.detail;
 
 import dev.hottek.data.model.Transaction;
+import dev.hottek.view.listener.AddTransactionListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,21 +26,25 @@ public class AccountPanel extends JPanel {
     }
 
     private void displayAccountData() {
-        JPanel topPanel = new JPanel();
-        topPanel.setBorder(BorderFactory.createTitledBorder("Account Overview"));
+        JPanel overviewPanel = new JPanel();
+        overviewPanel.setBorder(BorderFactory.createTitledBorder("Account Overview"));
         JLabel balanceLabel = new JLabel("Current account balance: " + this.balance);
-        topPanel.add(balanceLabel);
+        overviewPanel.add(balanceLabel);
 
-        JPanel bottomPanel = new JPanel(new GridBagLayout());
-        bottomPanel.setBorder(BorderFactory.createTitledBorder("Transactions"));
+        JPanel transactionPanel = new JPanel(new GridBagLayout());
+        transactionPanel.setBorder(BorderFactory.createTitledBorder("Transactions"));
 
         String[] columnNames = getColumnNames();
         Object[][] tableData = getTableData();
         JTable transactionTable = new JTable(tableData, columnNames);
-        bottomPanel.add(transactionTable);
+        transactionPanel.add(transactionTable);
 
-        this.add(topPanel, BorderLayout.NORTH);
-        this.add(bottomPanel, BorderLayout.SOUTH);
+        AddTransactionListener addTransactionListener = new AddTransactionListener();
+        JButton addTransaction = new JButton("Add transaction");
+        addTransaction.addActionListener(addTransactionListener);
+
+        this.add(overviewPanel, BorderLayout.NORTH);
+        this.add(transactionPanel, BorderLayout.CENTER);
     }
 
     private Object[][] getTableData() {
