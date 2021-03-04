@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 public class FinanceMangerPane extends JTabbedPane {
-    private Map<String, JPanel> accountPanelMap;
+    private Map<String, AccountPanel> accountPanelMap;
+    private OverviewPanel overviewPanel;
 
     public FinanceMangerPane() {
         this.setBounds(50, 50, 200, 200);
@@ -20,27 +21,24 @@ public class FinanceMangerPane extends JTabbedPane {
 
     private void addOverviewPanel() {
         String panelName = "Overview";
-        OverviewPanel overviewPanel = new OverviewPanel();
-        this.accountPanelMap.put(panelName, overviewPanel);
-        this.add(panelName, overviewPanel);
+        this.overviewPanel = new OverviewPanel();
+        this.add(panelName, this.overviewPanel);
     }
 
     public void addAccountPanel(Account account) {
         String panelName = account.getName();
-        Float balance = null;
+        Float balance;
         try {
             balance = account.getBalance();
         } catch (NullPointerException ignored) {
             // no initial/saved balance
-        } finally {
             balance = 0.0f;
         }
-        List<Transaction> transactions = null;
+        List<Transaction> transactions;
         try {
             transactions = account.getTransactions();
         } catch (NullPointerException ignored) {
             // no initial/saved transactions
-        } finally {
             transactions = new LinkedList<>();
         }
         AccountPanel accountPanel = new AccountPanel(panelName, balance, transactions);
@@ -48,4 +46,9 @@ public class FinanceMangerPane extends JTabbedPane {
         this.add(panelName, accountPanel);
     }
 
+    public List<Account> getLatestData() {
+        List<Account> accounts = new LinkedList<>();
+        this.accountPanelMap.forEach((k, v) -> accounts.add(v.getPanelData()));
+        return accounts;
+    }
 }

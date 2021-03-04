@@ -1,11 +1,13 @@
 package dev.hottek.view.detail;
 
+import dev.hottek.data.model.Account;
 import dev.hottek.data.model.Transaction;
 import dev.hottek.view.listener.AddTransactionListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AccountPanel extends JPanel {
@@ -17,12 +19,31 @@ public class AccountPanel extends JPanel {
     public AccountPanel(String accountName, float balance, List<Transaction> transactions) {
         this.accountName = accountName;
         this.balance = balance;
-        this.transactions = transactions;
+        if (transactions == null) {
+            this.transactions = new LinkedList<>();
+        } else {
+            this.transactions = transactions;
+        }
 
         this.fields = Transaction.class.getDeclaredFields();
         this.setLayout(new BorderLayout());
 
         displayAccountData();
+    }
+
+    public Account getPanelData() {
+        return new Account(accountName, balance, transactions);
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
+        updateTransactionTable();
+    }
+
+    private void updateTransactionTable() {
+        //TODO: update Table somehow
+        // https://docs.oracle.com/javase/7/docs/api/javax/swing/table/AbstractTableModel.html#fireTableDataChanged()
+        // https://stackoverflow.com/questions/3179136/jtable-how-to-refresh-table-model-after-insert-delete-or-update-the-data
     }
 
     private void displayAccountData() {
@@ -39,12 +60,13 @@ public class AccountPanel extends JPanel {
         JTable transactionTable = new JTable(tableData, columnNames);
         transactionPanel.add(transactionTable);
 
-        AddTransactionListener addTransactionListener = new AddTransactionListener();
+        AddTransactionListener addTransactionListener = new AddTransactionListener(this);
         JButton addTransaction = new JButton("Add transaction");
         addTransaction.addActionListener(addTransactionListener);
 
         this.add(overviewPanel, BorderLayout.NORTH);
         this.add(transactionPanel, BorderLayout.CENTER);
+        this.add(addTransaction, BorderLayout.SOUTH);
     }
 
     private Object[][] getTableData() {

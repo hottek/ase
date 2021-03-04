@@ -77,7 +77,7 @@ public class FinanceManagerWindow extends JFrame {
 
         private void saveCurrentContext() {
             JsonWriter jsonWriter = new JsonWriter();
-            List<Account> accounts = FMcontext.getAccountList();
+            List<Account> accounts = financeMangerPane.getLatestData();
             String dirPath = selectDir(); //TODO: Fix selectDir, currently the returned path is one level higher than the selected dir
             String fileName = retrieveFileName();
             String completeFilePath = dirPath + "\\" + fileName;
