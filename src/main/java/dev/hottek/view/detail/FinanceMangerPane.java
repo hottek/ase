@@ -4,10 +4,7 @@ import dev.hottek.data.model.Account;
 import dev.hottek.data.model.Transaction;
 
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FinanceMangerPane extends JTabbedPane {
     private Map<String, AccountPanel> accountPanelMap;
@@ -44,6 +41,9 @@ public class FinanceMangerPane extends JTabbedPane {
         AccountPanel accountPanel = new AccountPanel(panelName, balance, transactions);
         this.accountPanelMap.put(panelName, accountPanel);
         this.add(panelName, accountPanel);
+
+        Observable observable = accountPanel.getObservable();
+        overviewPanel.addObservable(observable);
     }
 
     public List<Account> getLatestData() {

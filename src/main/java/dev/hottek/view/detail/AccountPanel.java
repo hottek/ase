@@ -1,6 +1,7 @@
 package dev.hottek.view.detail;
 
 import dev.hottek.data.model.Account;
+import dev.hottek.data.model.AccountPanelData;
 import dev.hottek.data.model.Transaction;
 import dev.hottek.view.listener.AddTransactionListener;
 
@@ -8,26 +9,20 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.lang.reflect.Field;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Vector;
 
 public class AccountPanel extends JPanel {
-    private final String accountName;
-    private float balance;
-    private List<Transaction> transactions;
+
+    private AccountPanelData panelData;
     private final Field[] fields;
     private DefaultTableModel tableModel;
+    private JLabel balanceLabel;
 
     public AccountPanel(String accountName, float balance, List<Transaction> transactions) {
-        this.accountName = accountName;
-        this.balance = balance;
-        if (transactions == null) {
-            this.transactions = new LinkedList<>();
-        } else {
-            this.transactions = transactions;
-        }
 
+        panelData = new AccountPanelData(accountName, balance, transactions);
         this.fields = Transaction.class.getDeclaredFields();
         this.setLayout(new BorderLayout());
 
@@ -35,12 +30,22 @@ public class AccountPanel extends JPanel {
     }
 
     public Account getPanelData() {
-        return new Account(accountName, balance, transactions);
+        return new Account(panelData.getAccountName(), panelData.getBalance(), panelData.getTransactions());
+    }
+
+    public Observable getObservable() {
+        return panelData;
     }
 
     public void addTransaction(Transaction transaction) {
-        this.transactions.add(transaction);
+        panelData.addTransaction(transaction);
+        panelData.calculateNewBalance();
+        updateBalanceLabel();
         updateTransactionTable(transaction);
+    }
+
+    private void updateBalanceLabel() {
+        balanceLabel.setText("Current account balance: " + panelData.getBalance());
     }
 
     private void updateTransactionTable(Transaction transaction) {
@@ -52,7 +57,7 @@ public class AccountPanel extends JPanel {
     private void displayAccountData() {
         JPanel overviewPanel = new JPanel();
         overviewPanel.setBorder(BorderFactory.createTitledBorder("Account Overview"));
-        JLabel balanceLabel = new JLabel("Current account balance: " + this.balance);
+        balanceLabel = new JLabel("Current account balance: " + panelData.getBalance());
         overviewPanel.add(balanceLabel);
 
         JPanel transactionPanel = new JPanel(new GridBagLayout());
@@ -75,7 +80,7 @@ public class AccountPanel extends JPanel {
 
     private Vector<Vector<Object>> getTableData() {
         Vector<Vector<Object>> tableData = new Vector<>();
-        for (Transaction transaction : transactions) {
+        for (Transaction transaction : panelData.getTransactions()) {
             Vector<Object> rowData = transactionToObjectVector(transaction);
             tableData.add(rowData);
         }
