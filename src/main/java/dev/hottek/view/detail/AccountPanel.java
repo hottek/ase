@@ -5,16 +5,19 @@ import dev.hottek.data.model.Transaction;
 import dev.hottek.view.listener.AddTransactionListener;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 public class AccountPanel extends JPanel {
     private final String accountName;
     private float balance;
     private List<Transaction> transactions;
     private final Field[] fields;
+    private DefaultTableModel tableModel;
 
     public AccountPanel(String accountName, float balance, List<Transaction> transactions) {
         this.accountName = accountName;
@@ -37,13 +40,13 @@ public class AccountPanel extends JPanel {
 
     public void addTransaction(Transaction transaction) {
         this.transactions.add(transaction);
-        updateTransactionTable();
+        updateTransactionTable(transaction);
     }
 
-    private void updateTransactionTable() {
-        //TODO: update Table somehow
-        // https://docs.oracle.com/javase/7/docs/api/javax/swing/table/AbstractTableModel.html#fireTableDataChanged()
-        // https://stackoverflow.com/questions/3179136/jtable-how-to-refresh-table-model-after-insert-delete-or-update-the-data
+    private void updateTransactionTable(Transaction transaction) {
+        Vector<Object> rowData = transactionToObjectVector(transaction);
+        tableModel.addRow(rowData);
+        tableModel.fireTableDataChanged();
     }
 
     private void displayAccountData() {
@@ -55,9 +58,10 @@ public class AccountPanel extends JPanel {
         JPanel transactionPanel = new JPanel(new GridBagLayout());
         transactionPanel.setBorder(BorderFactory.createTitledBorder("Transactions"));
 
-        String[] columnNames = getColumnNames();
-        Object[][] tableData = getTableData();
+        Vector<String> columnNames = getColumnNames();
+        Vector<Vector<Object>> tableData = getTableData();
         JTable transactionTable = new JTable(tableData, columnNames);
+        tableModel = (DefaultTableModel) transactionTable.getModel();
         transactionPanel.add(transactionTable);
 
         AddTransactionListener addTransactionListener = new AddTransactionListener(this);
@@ -69,25 +73,30 @@ public class AccountPanel extends JPanel {
         this.add(addTransaction, BorderLayout.SOUTH);
     }
 
-    private Object[][] getTableData() {
-        int numberOfTransactions = transactions.size();
-        int numberOfFields = fields.length;
-        Object[][] tableData = new Object[numberOfTransactions][numberOfFields];
-        for (int transaction = 0; transaction < numberOfTransactions; transaction++) {
-            Transaction currentTransaction = transactions.get(transaction);
-            Object[] values = currentTransaction.getValuesOfAllFields();
-            tableData[transaction] = values;
+    private Vector<Vector<Object>> getTableData() {
+        Vector<Vector<Object>> tableData = new Vector<>();
+        for (Transaction transaction : transactions) {
+            Vector<Object> rowData = transactionToObjectVector(transaction);
+            tableData.add(rowData);
         }
         return tableData;
     }
 
-    private String[] getColumnNames() {
-        String[] columnNames = new String[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            String fieldName = fields[i].getName();
+    private Vector<String> getColumnNames() {
+        Vector<String> columnNames = new Vector<>();
+        for (Field field : fields) {
+            String fieldName = field.getName();
             fieldName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            columnNames[i] = fieldName;
+            columnNames.add(fieldName);
         }
         return columnNames;
+    }
+
+    private Vector<Object> transactionToObjectVector(Transaction transaction) {
+        Vector<Object> rowData = new Vector<>();
+        rowData.add(transaction.getSender());
+        rowData.add(transaction.getRecipient());
+        rowData.add(transaction.getValue());
+        return rowData;
     }
 }

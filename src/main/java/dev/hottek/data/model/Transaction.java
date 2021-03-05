@@ -38,12 +38,4 @@ public class Transaction {
     public void setValue(Float value) {
         this.value = value;
     }
-
-    public Object[] getValuesOfAllFields() {
-        LinkedList<java.io.Serializable> values = new LinkedList<java.io.Serializable>(); //Generify class
-        values.add(getSender());
-        values.add(getRecipient());
-        values.add(getValue());
-        return values.toArray();
-    }
 }
