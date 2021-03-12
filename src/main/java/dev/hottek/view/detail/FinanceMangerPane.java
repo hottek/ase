@@ -18,7 +18,7 @@ public class FinanceMangerPane extends JTabbedPane {
 
     private void addOverviewPanel() {
         String panelName = "Overview";
-        this.overviewPanel = new OverviewPanel();
+        this.overviewPanel = new OverviewPanel(this);
         this.add(panelName, this.overviewPanel);
     }
 
@@ -44,6 +44,7 @@ public class FinanceMangerPane extends JTabbedPane {
 
         Observable observable = accountPanel.getObservable();
         overviewPanel.addObservable(observable);
+        overviewPanel.updateTotalBalance();
     }
 
     public List<Account> getLatestData() {

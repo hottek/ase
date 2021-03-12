@@ -29,11 +29,11 @@ public class AccountPanelData extends Observable {
     }
 
     public void calculateNewBalance() {
-        Float newBalance = balance;
+        Float newBalance = 0.0F;
         for (Transaction transaction : transactions) {
             newBalance += transaction.getValue();
         }
-        balance = newBalance;
+        balance += newBalance;
         accountPanelDataChanged();
     }
 
