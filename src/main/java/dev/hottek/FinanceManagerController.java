@@ -2,7 +2,7 @@ package dev.hottek;
 
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.view.FinanceManagerWindow;
-import dev.hottek.view.OpeningWindow;
+import dev.hottek.view.dialog.OpeningWindow;
 
 class FinanceManagerController {
     private FinanceManagerContext FMcontext;

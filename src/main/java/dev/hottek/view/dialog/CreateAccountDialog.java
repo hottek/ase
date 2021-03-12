@@ -1,4 +1,4 @@
-package dev.hottek.view;
+package dev.hottek.view.dialog;
 
 import dev.hottek.data.model.Account;
 

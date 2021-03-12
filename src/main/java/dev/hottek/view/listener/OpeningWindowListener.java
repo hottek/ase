@@ -4,7 +4,7 @@ import dev.hottek.data.DataHandler;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
 import dev.hottek.data.model.Account;
-import dev.hottek.view.CreateAccountDialog;
+import dev.hottek.view.dialog.CreateAccountDialog;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

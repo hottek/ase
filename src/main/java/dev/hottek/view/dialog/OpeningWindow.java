@@ -1,4 +1,4 @@
-package dev.hottek.view;
+package dev.hottek.view.dialog;
 
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.view.listener.OpeningWindowListener;
