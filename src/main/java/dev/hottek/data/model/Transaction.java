@@ -1,34 +1,41 @@
 package dev.hottek.data.model;
 
-import java.util.LinkedList;
-
 public class Transaction {
 
-    //TODO: Add Datum, remove recipient, change sender to Empfänger / Zahlungspflichtiger
-    private String sender;
-    private String recipient;
+    private String participant;
+    private String subject;
+    private long timestamp;
     private Float value;
 
-    public Transaction(String sender, String recipient, Float value) {
-        this.sender = sender;
-        this.recipient = recipient;
+    public Transaction(String participant, String subject, long timestamp, Float value) {
+        this.participant = participant;
+        this.subject = subject;
+        this.timestamp = timestamp;
         this.value = value;
     }
 
-    public String getSender() {
-        return sender;
+    public String getParticipant() {
+        return participant;
     }
 
-    public void setSender(String sender) {
-        this.sender = sender;
+    public void setParticipant(String participant) {
+        this.participant = participant;
     }
 
-    public String getRecipient() {
-        return recipient;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Float getValue() {

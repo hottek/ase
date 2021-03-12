@@ -4,13 +4,13 @@
     "balance": 1234,
     "transactions": [
       {
-        "sender": "Me",
-        "recipient": "Emma",
+        "participant": "Me",
+        "subject": "Emma",
         "value": 20
       },
       {
-        "sender": "Me",
-        "recipient": "Felix",
+        "participant": "Me",
+        "subject": "Felix",
         "value": -15
       }
     ]
@@ -20,13 +20,13 @@
     "balance": -20,
     "transactions": [
       {
-        "sender": "Me",
-        "recipient": "Yannis",
+        "participant": "Me",
+        "subject": "Yannis",
         "value": 80
       },
       {
-        "sender": "Me",
-        "recipient": "Vermieter",
+        "participant": "Me",
+        "subject": "Vermieter",
         "value": 420
       }
     ]

@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.List;
 import java.util.Observable;
 import java.util.Vector;
@@ -99,8 +100,9 @@ public class AccountPanel extends JPanel {
 
     private Vector<Object> transactionToObjectVector(Transaction transaction) {
         Vector<Object> rowData = new Vector<>();
-        rowData.add(transaction.getSender());
-        rowData.add(transaction.getRecipient());
+        rowData.add(transaction.getParticipant());
+        rowData.add(transaction.getSubject());
+        rowData.add(new Date(transaction.getTimestamp()));
         rowData.add(transaction.getValue());
         return rowData;
     }
