@@ -5,7 +5,6 @@ import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonWriter;
 import dev.hottek.data.model.Account;
 import dev.hottek.view.detail.FinanceMangerPane;
-import dev.hottek.view.dialog.CreateAccountDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,20 +58,10 @@ public class FinanceManagerWindow extends JFrame {
                     saveCurrentContext();
                     break;
                 case "add-account":
-                    newAccountPanel();
+                    financeMangerPane.newAccountPanel();
                     break;
                 default:
                     break;
-            }
-        }
-
-        private void newAccountPanel() {
-            // TODO: Add Dialog to create new account or different type which is displayed in the panel
-            CreateAccountDialog accountDialog = new CreateAccountDialog();
-            Account newAccount = accountDialog.showDialog("Create new Account");
-            if (newAccount != null) {
-                financeMangerPane.addAccountPanel(newAccount);
-                FMcontext.addAccount(newAccount);
             }
         }
 

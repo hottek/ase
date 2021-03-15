@@ -2,18 +2,37 @@ package dev.hottek.view.detail;
 
 import dev.hottek.data.model.Account;
 import dev.hottek.data.model.Transaction;
+import dev.hottek.view.dialog.CreateAccountDialog;
 
 import javax.swing.*;
 import java.util.*;
+import java.util.List;
 
 public class FinanceMangerPane extends JTabbedPane {
     private Map<String, AccountPanel> accountPanelMap;
     private OverviewPanel overviewPanel;
+    private AddButtonPanel addButtonPanel;
 
     public FinanceMangerPane() {
         this.setBounds(50, 50, 200, 200);
         this.accountPanelMap = new HashMap<>();
+        this.addButtonPanel = new AddButtonPanel();
         addOverviewPanel();
+        addAddButtonPanel();
+        this.addChangeListener(e -> {
+            Object source = e.getSource();
+            if (((FinanceMangerPane) source).getSelectedComponent() instanceof AddButtonPanel) {
+                newAccountPanel();
+            }
+        });
+    }
+
+    private void addAddButtonPanel() {
+        try {
+            this.remove(addButtonPanel);
+        } catch (NullPointerException ignored) { }
+        this.add(addButtonPanel, this.getTabCount());
+        this.setTitleAt(this.getTabCount() - 1, "+");
     }
 
     private void addOverviewPanel() {
@@ -45,6 +64,7 @@ public class FinanceMangerPane extends JTabbedPane {
         Observable observable = accountPanel.getObservable();
         overviewPanel.addObservable(observable);
         overviewPanel.updateTotalBalance();
+        addAddButtonPanel();
     }
 
     public List<Account> getLatestData() {
@@ -52,4 +72,15 @@ public class FinanceMangerPane extends JTabbedPane {
         this.accountPanelMap.forEach((k, v) -> accounts.add(v.getPanelData()));
         return accounts;
     }
+
+    public void newAccountPanel() {
+        CreateAccountDialog accountDialog = new CreateAccountDialog();
+        Account newAccount = accountDialog.showDialog("Create new Account");
+        if (newAccount != null) {
+            addAccountPanel(newAccount);
+        }
+    }
+
+    private class AddButtonPanel extends JPanel { } // dummy class for component of tab
+
 }
