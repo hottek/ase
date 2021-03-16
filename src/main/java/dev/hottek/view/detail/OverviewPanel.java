@@ -1,7 +1,6 @@
 package dev.hottek.view.detail;
 
 import dev.hottek.data.model.Account;
-import dev.hottek.data.model.AccountPanelData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +11,10 @@ import java.util.Observer;
 
 public class OverviewPanel extends JPanel implements Observer {
 
-    private List<Observable> observables;
+    private final List<Observable> observables;
     private JLabel totalBalanceLabel;
     private Float totalBalance;
-    private FinanceMangerPane financeMangerPane;
+    private final FinanceMangerPane financeMangerPane;
 
     public OverviewPanel(FinanceMangerPane financeMangerPane) {
         this.observables = new LinkedList<>();

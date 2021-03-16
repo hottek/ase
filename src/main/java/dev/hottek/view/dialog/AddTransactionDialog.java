@@ -11,8 +11,10 @@ import java.util.Locale;
 
 public class AddTransactionDialog extends JPanel {
 
-    private JTextField participantInput, subjectInput, valueInput;
-    private DatePicker datePicker;
+    private final JTextField participantInput;
+    private final JTextField subjectInput;
+    private final JTextField valueInput;
+    private final DatePicker datePicker;
 
     public AddTransactionDialog() {
         this.setLayout(new BorderLayout());
