@@ -72,15 +72,19 @@ public class FinanceManagerWindow extends JFrame {
             String fileName = retrieveFileName();
             String completeFilePath = dirPath + "\\" + fileName;
             if (checkForPasswordProtection()) {
-                String accountsAsJson = jsonWriter.writeToString(accounts);
-                String password = retrievePassword();
-                String filePath = completeFilePath + "_encrypted.fm";
-                String ivFilePath = completeFilePath + "_encrypted_iv.fm";
-                DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
-                dataHandler.saveData(accountsAsJson);
+                encryptAndSafeCurrentContext(jsonWriter, accounts, completeFilePath);
                 return;
             }
             jsonWriter.writeToFile(accounts, completeFilePath + ".fm");
+        }
+
+        private void encryptAndSafeCurrentContext(JsonWriter jsonWriter, List<Account> accounts, String completeFilePath) {
+            String accountsAsJson = jsonWriter.writeToString(accounts);
+            String password = retrievePassword();
+            String filePath = completeFilePath + "_encrypted.fm";
+            String ivFilePath = completeFilePath + "_encrypted_iv.fm";
+            DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
+            dataHandler.saveData(accountsAsJson);
         }
 
         private String selectDir() {
