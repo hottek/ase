@@ -16,7 +16,7 @@ import java.util.Vector;
 
 public class AccountPanel extends JPanel {
 
-    private AccountPanelData panelData;
+    private final AccountPanelData panelData;
     private final Field[] fields;
     private DefaultTableModel tableModel;
     private JLabel balanceLabel;

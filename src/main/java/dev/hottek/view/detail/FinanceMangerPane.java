@@ -9,9 +9,9 @@ import java.util.*;
 import java.util.List;
 
 public class FinanceMangerPane extends JTabbedPane {
-    private Map<String, AccountPanel> accountPanelMap;
+    private final Map<String, AccountPanel> accountPanelMap;
     private OverviewPanel overviewPanel;
-    private AddButtonPanel addButtonPanel;
+    private final AddButtonPanel addButtonPanel;
 
     public FinanceMangerPane() {
         this.setBounds(50, 50, 200, 200);
@@ -61,10 +61,14 @@ public class FinanceMangerPane extends JTabbedPane {
         this.accountPanelMap.put(panelName, accountPanel);
         this.add(panelName, accountPanel);
 
+        registerAccountPanelAsObservable(accountPanel);
+        addAddButtonPanel();
+    }
+
+    private void registerAccountPanelAsObservable(AccountPanel accountPanel) {
         Observable observable = accountPanel.getObservable();
         overviewPanel.addObservable(observable);
         overviewPanel.updateTotalBalance();
-        addAddButtonPanel();
     }
 
     public List<Account> getLatestData() {
@@ -81,6 +85,6 @@ public class FinanceMangerPane extends JTabbedPane {
         }
     }
 
-    private class AddButtonPanel extends JPanel { } // dummy class for component of tab
+    private static class AddButtonPanel extends JPanel { } // dummy class for component of tab
 
 }
