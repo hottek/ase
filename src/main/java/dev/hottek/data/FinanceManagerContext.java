@@ -29,8 +29,4 @@ public class FinanceManagerContext {
     public void setWait(boolean wait) {
         this.wait = wait;
     }
-
-    public void addAccount(Account account) {
-        this.accountList.add(account);
-    }
 }

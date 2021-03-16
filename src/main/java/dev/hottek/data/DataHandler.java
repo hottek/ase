@@ -2,7 +2,6 @@ package dev.hottek.data;
 
 import dev.hottek.data.encryption.PBEModel;
 import dev.hottek.data.encryption.PasswordBasedEncryption;
-import dev.hottek.data.model.Account;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -11,7 +10,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.spec.InvalidParameterSpecException;
 import java.util.ArrayList;
-
 
 public class DataHandler {
     private final String cipherTextFilePath;
@@ -103,11 +101,9 @@ public class DataHandler {
     private byte[] toPrimitives(Byte[] oBytes)
     {
         byte[] bytes = new byte[oBytes.length];
-
         for(int i = 0; i < oBytes.length; i++) {
             bytes[i] = oBytes[i];
         }
-
         return bytes;
     }
 }

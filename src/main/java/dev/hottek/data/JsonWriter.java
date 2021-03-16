@@ -18,7 +18,7 @@ public class JsonWriter {
     }
 
     public void writeToFile(List<Account> accounts, String filePath) {
-        Writer writer = null;
+        Writer writer;
         try {
             writer = Files.newBufferedWriter(Paths.get(filePath));
             gson.toJson(accounts, writer);
