@@ -40,7 +40,6 @@ public class AccountPanel extends JPanel {
 
     public void addTransaction(Transaction transaction) {
         panelData.addTransaction(transaction);
-        panelData.calculateNewBalance();
         updateBalanceLabel();
         updateTransactionTable(transaction);
     }

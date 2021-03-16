@@ -43,6 +43,7 @@ public class AccountPanelData extends Observable {
 
     public void addTransaction(Transaction transaction) {
         this.transactions.add(transaction);
+        calculateNewBalance();
         accountPanelDataChanged();
     }
 
