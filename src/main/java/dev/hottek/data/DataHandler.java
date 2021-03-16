@@ -5,6 +5,7 @@ import dev.hottek.data.encryption.PasswordBasedEncryption;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.swing.*;
 import java.io.*;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -28,7 +29,7 @@ public class DataHandler {
         try {
             bytes = passwordBasedEncryption.decrypt(pbeModel);
         } catch (InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace(); //TODO: communicate to user if e.g. password was incorrect, maybe through different exception
+            JOptionPane.showMessageDialog(new JFrame(), "Wrong password, please try again", "Something went wrong", JOptionPane.ERROR_MESSAGE);
         }
         return new String(bytes);
     }
