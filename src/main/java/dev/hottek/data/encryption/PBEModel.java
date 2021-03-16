@@ -1,8 +1,8 @@
 package dev.hottek.data.encryption;
 
 public class PBEModel {
-    private byte[] iv;
-    private byte[] ciphertext;
+    private final byte[] iv;
+    private final byte[] ciphertext;
 
     public PBEModel(byte[] iv, byte[] ciphertext) {
         this.iv = iv;
