@@ -56,7 +56,7 @@ public class OpeningWindowListener implements ActionListener {
                 break;
         }
     }
-    
+
     private JFileChooser setupFileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Select a Finance Manager file");

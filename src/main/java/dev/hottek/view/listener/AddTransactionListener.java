@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class AddTransactionListener implements ActionListener {
 
-    private AccountPanel accountPanel;
+    private final AccountPanel accountPanel;
 
     public AddTransactionListener(AccountPanel accountPanel) {
         this.accountPanel = accountPanel;
