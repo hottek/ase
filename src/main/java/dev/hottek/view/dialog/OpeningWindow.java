@@ -5,6 +5,7 @@ import dev.hottek.view.listener.OpeningWindowListener;
 
 import javax.swing.*;
 import java.awt.*;
+
 public class OpeningWindow extends JFrame {
 
     private final FinanceManagerContext FMcontext;

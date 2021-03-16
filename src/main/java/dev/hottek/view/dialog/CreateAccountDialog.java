@@ -7,7 +7,8 @@ import java.awt.*;
 
 public class CreateAccountDialog extends JPanel {
 
-    private JTextField accountNameInput, balanceInput;
+    private final JTextField accountNameInput;
+    private final JTextField balanceInput;
 
     public CreateAccountDialog() {
         this.setLayout(new BorderLayout());
