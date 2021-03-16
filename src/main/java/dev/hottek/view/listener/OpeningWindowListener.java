@@ -15,7 +15,7 @@ import java.util.List;
 
 public class OpeningWindowListener implements ActionListener {
 
-    private FinanceManagerContext FMcontext;
+    private final FinanceManagerContext FMcontext;
 
     public OpeningWindowListener(FinanceManagerContext FMcontext) {
         super();
@@ -34,39 +34,43 @@ public class OpeningWindowListener implements ActionListener {
                 FMcontext.setWait(false);
                 break;
             case "open":
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Select a Finance Manager file");
-                fileChooser.setAcceptAllFileFilterUsed(false);
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Finance Manager file", "fm");
-                fileChooser.addChoosableFileFilter(filter);
+                JFileChooser fileChooser = setupFileChooser();
                 int returnValue = fileChooser.showOpenDialog(null);
-                switch (returnValue) { //TODO: Handle other returnValues
-                    case JFileChooser.APPROVE_OPTION:
-                        String filePath = fileChooser.getSelectedFile().getPath();
-                        String filePathWithoutFileType = filePath.split("\\.")[0];
-                        String ivFilePath = filePathWithoutFileType + "_iv.fm";
-                        JsonReader jsonReader = new JsonReader();
-                        boolean isPasswordProtected = checkForPasswordProtection();
-                        if (isPasswordProtected) {
-                            String password = retrievePassword();
-                            DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
-                            String data = dataHandler.loadData();
-                            List<Account> accounts = jsonReader.readJsonFromString(data);
-                            FMcontext.setAccountList(accounts);
-                            FMcontext.setWait(false);
-                            break;
-                        }
-                        List<Account> accounts = jsonReader.readJsonFromFile(filePath);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    String filePath = fileChooser.getSelectedFile().getPath();
+                    String filePathWithoutFileType = filePath.split("\\.")[0];
+                    String ivFilePath = filePathWithoutFileType + "_iv.fm";
+                    JsonReader jsonReader = new JsonReader();
+                    if (checkForPasswordProtection()) {
+                        List<Account> accounts = getAccountsFromEncryptedFile(filePath, ivFilePath, jsonReader);
                         FMcontext.setAccountList(accounts);
                         FMcontext.setWait(false);
                         break;
-                    default:
-                        break;
+                    }
+                    List<Account> accounts = jsonReader.readJsonFromFile(filePath);
+                    FMcontext.setAccountList(accounts);
+                    FMcontext.setWait(false);
                 }
                 break;
             default:
                 break;
         }
+    }
+    
+    private JFileChooser setupFileChooser() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select a Finance Manager file");
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Finance Manager file", "fm");
+        fileChooser.addChoosableFileFilter(filter);
+        return fileChooser;
+    }
+
+    private List<Account> getAccountsFromEncryptedFile(String filePath, String ivFilePath, JsonReader jsonReader) {
+        String password = retrievePassword();
+        DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
+        String data = dataHandler.loadData();
+        return jsonReader.readJsonFromString(data);
     }
 
     private String retrievePassword() {
