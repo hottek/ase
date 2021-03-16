@@ -2,10 +2,10 @@ package dev.hottek.data.model;
 
 public class Transaction {
 
-    private String participant;
-    private String subject;
-    private long timestamp;
-    private Float value;
+    private final String participant;
+    private final String subject;
+    private final long timestamp;
+    private final Float value;
 
     public Transaction(String participant, String subject, long timestamp, Float value) {
         this.participant = participant;
@@ -18,31 +18,15 @@ public class Transaction {
         return participant;
     }
 
-    public void setParticipant(String participant) {
-        this.participant = participant;
-    }
-
     public String getSubject() {
         return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
     }
 
     public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
     public Float getValue() {
         return value;
-    }
-
-    public void setValue(Float value) {
-        this.value = value;
     }
 }

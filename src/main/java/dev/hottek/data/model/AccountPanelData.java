@@ -7,7 +7,7 @@ import java.util.Observable;
 public class AccountPanelData extends Observable {
     private final String accountName;
     private float balance;
-    private List<Transaction> transactions;
+    private final List<Transaction> transactions;
 
     public AccountPanelData(String accountName, float balance, List<Transaction> transactions) {
         this.accountName = accountName;
