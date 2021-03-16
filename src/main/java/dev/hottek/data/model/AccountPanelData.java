@@ -27,16 +27,7 @@ public class AccountPanelData extends Observable {
     public float getBalance() {
         return balance;
     }
-
-    public void calculateNewBalance() {
-        Float newBalance = 0.0F;
-        for (Transaction transaction : transactions) {
-            newBalance += transaction.getValue();
-        }
-        balance += newBalance;
-        accountPanelDataChanged();
-    }
-
+    
     public List<Transaction> getTransactions() {
         return transactions;
     }
@@ -44,6 +35,15 @@ public class AccountPanelData extends Observable {
     public void addTransaction(Transaction transaction) {
         this.transactions.add(transaction);
         calculateNewBalance();
+        accountPanelDataChanged();
+    }
+
+    private void calculateNewBalance() {
+        Float newBalance = 0.0F;
+        for (Transaction transaction : transactions) {
+            newBalance += transaction.getValue();
+        }
+        balance += newBalance;
         accountPanelDataChanged();
     }
 
