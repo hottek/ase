@@ -1,5 +1,7 @@
 package dev.hottek.view.dialog;
 
+import dev.hottek.data.InputValidator;
+import dev.hottek.data.exception.InvalidInputException;
 import dev.hottek.data.model.Account;
 
 import javax.swing.*;
@@ -26,11 +28,18 @@ public class CreateAccountDialog extends JPanel {
         this.add(balancePanel, BorderLayout.SOUTH);
     }
 
-    public Account showDialog(String title) {
+    public Account showDialog(String title) { // TODO handle Cancel or Close Option of Dialog
         int result = JOptionPane.showConfirmDialog(null, this,
                 title, JOptionPane.OK_CANCEL_OPTION);
+        String accountNameInputText = this.accountNameInput.getText();
         if (result == JOptionPane.OK_OPTION) {
-            return new Account(this.accountNameInput.getText(), Float.parseFloat(this.balanceInput.getText()), null);
+            try {
+                InputValidator validator = new InputValidator();
+                validator.validate(accountNameInputText, InputValidator.InputType.STRING);
+                return new Account(accountNameInputText, Float.parseFloat(this.balanceInput.getText()), null);
+            } catch (InvalidInputException invalidInputException) {
+                JOptionPane.showMessageDialog(new JFrame(), invalidInputException.getMessage(), "Something went wrong", JOptionPane.ERROR_MESSAGE);
+            }
         }
         return null;
     }

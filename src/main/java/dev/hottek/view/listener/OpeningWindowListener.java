@@ -25,9 +25,12 @@ public class OpeningWindowListener implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
-            case "new": //TODO: Force user to enter an account name
-                CreateAccountDialog accountDialog = new CreateAccountDialog();
-                Account initialAccount = accountDialog.showDialog("Enter the name of the first account");
+            case "new":
+                Account initialAccount = null;
+                while (initialAccount == null) {
+                    CreateAccountDialog accountDialog = new CreateAccountDialog();
+                    initialAccount = accountDialog.showDialog("Enter the name of the first account");
+                }
                 List<Account> initialAccounts = new LinkedList<>();
                 initialAccounts.add(initialAccount);
                 FMcontext.setAccountList(initialAccounts);
