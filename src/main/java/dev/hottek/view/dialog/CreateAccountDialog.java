@@ -34,7 +34,7 @@ public class CreateAccountDialog extends JPanel {
         String accountNameInputText = this.accountNameInput.getText();
         if (result == JOptionPane.OK_OPTION) {
             try {
-                InputValidator validator = new InputValidator();
+                InputValidator validator = new InputValidator(); // TODO Add Input Validator for balanceInput
                 validator.validate(accountNameInputText, InputValidator.InputType.STRING);
                 return new Account(accountNameInputText, Float.parseFloat(this.balanceInput.getText()), null);
             } catch (InvalidInputException invalidInputException) {

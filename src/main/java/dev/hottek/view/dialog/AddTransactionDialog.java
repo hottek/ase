@@ -55,7 +55,7 @@ public class AddTransactionDialog extends JPanel {
     public Transaction showDialog(String title) {
         int result = JOptionPane.showConfirmDialog(null,this,title,
                 JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) {
+        if (result == JOptionPane.OK_OPTION) { // TODO add Input Validator
             Timestamp timestamp = Timestamp.valueOf(datePicker.getDate().atStartOfDay());
             return new Transaction(participantInput.getText(), subjectInput.getText(),
                     timestamp.getTime(), Float.parseFloat(valueInput.getText()));
