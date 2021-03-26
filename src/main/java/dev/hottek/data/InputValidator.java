@@ -12,8 +12,11 @@ public class InputValidator {
                 if (inputString.length() < 1) throw new InvalidInputException();
                 break;
             case FLOAT:
-                Float inputFloat = (Float) input;
-                // TODO: Check for validation
+                try {
+                    Float inputFloat = (Float) input;
+                } catch (NumberFormatException | ClassCastException e) {
+                    throw new InvalidInputException();
+                }
                 break;
         }
     }

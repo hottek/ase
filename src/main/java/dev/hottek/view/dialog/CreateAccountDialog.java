@@ -32,10 +32,12 @@ public class CreateAccountDialog extends JPanel {
         int result = JOptionPane.showConfirmDialog(null, this,
                 title, JOptionPane.OK_CANCEL_OPTION);
         String accountNameInputText = this.accountNameInput.getText();
+        String balanceInputValue = this.balanceInput.getText();
         if (result == JOptionPane.OK_OPTION) {
             try {
                 InputValidator validator = new InputValidator(); // TODO Add Input Validator for balanceInput
                 validator.validate(accountNameInputText, InputValidator.InputType.STRING);
+                validator.validate(balanceInputValue, InputValidator.InputType.FLOAT);
                 return new Account(accountNameInputText, Float.parseFloat(this.balanceInput.getText()), null);
             } catch (InvalidInputException invalidInputException) {
                 JOptionPane.showMessageDialog(new JFrame(), invalidInputException.getMessage(), "Something went wrong", JOptionPane.ERROR_MESSAGE);
