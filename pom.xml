@@ -41,9 +41,9 @@
         </dependency>
 
         <dependency>
-            <groupId>io.github.vincenzopalazzo</groupId>
-            <artifactId>material-ui-swing</artifactId>
-            <version>1.1.2-rc1</version>
+            <groupId>org.pushing-pixels</groupId>
+            <artifactId>radiance-substance</artifactId>
+            <version>3.5.1</version>
         </dependency>
     </dependencies>
 </project>
