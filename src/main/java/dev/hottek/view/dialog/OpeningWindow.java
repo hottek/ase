@@ -6,7 +6,7 @@ import dev.hottek.view.listener.OpeningWindowListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class OpeningWindow extends JFrame {
+public class OpeningWindow extends JDialog {
 
     private final FinanceManagerContext FMcontext;
 
@@ -32,8 +32,7 @@ public class OpeningWindow extends JFrame {
         buttonPanel.add(openButton, BorderLayout.EAST);
         this.add(buttonPanel);
 
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setVisible(true);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.FMcontext.setWait(true);
     }
 
