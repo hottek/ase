@@ -13,7 +13,7 @@ public class InputValidator {
                 break;
             case FLOAT:
                 try {
-                    Float inputFloat = (Float) input;
+                    Float inputFloat = Float.parseFloat(String.valueOf(input));
                 } catch (NumberFormatException | ClassCastException e) {
                     throw new InvalidInputException();
                 }
