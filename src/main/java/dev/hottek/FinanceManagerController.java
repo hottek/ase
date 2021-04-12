@@ -8,21 +8,19 @@ import javax.swing.*;
 import java.awt.event.ActionListener;
 
 class FinanceManagerController {
-    private FinanceManagerContext FMcontext;
 
     FinanceManagerController() {
-        this.FMcontext = new FinanceManagerContext();
+        FinanceManagerContext.create();
     }
 
     void initialize() {
-        OpeningWindow openingWindow = new OpeningWindow(this.FMcontext);
+        OpeningWindow openingWindow = new OpeningWindow();
         openingWindow.setModal(true);
         waitForInput(openingWindow);
         openingWindow.setVisible(true);
-        this.FMcontext = openingWindow.getInput();
 
         FinanceManagerWindow financeManagerWindow = new FinanceManagerWindow();
-        financeManagerWindow.loadDataFromContext(this.FMcontext);
+        financeManagerWindow.loadDataFromContext();
     }
 
     private void waitForInput(OpeningWindow openingWindow) {

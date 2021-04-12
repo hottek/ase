@@ -3,6 +3,7 @@ package dev.hottek.view.listener;
 import dev.hottek.data.DataHandler;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
+import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
 import dev.hottek.view.dialog.CreateAccountDialog;
 
@@ -15,11 +16,15 @@ import java.util.List;
 
 public class OpeningWindowListener implements ActionListener {
 
-    private final FinanceManagerContext FMcontext;
+    private FinanceManagerContext FMcontext;
 
-    public OpeningWindowListener(FinanceManagerContext FMcontext) {
+    public OpeningWindowListener() {
         super();
-        this.FMcontext = FMcontext;
+        try {
+            this.FMcontext = FinanceManagerContext.getInstance();
+        } catch (FMContextNotCreatedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

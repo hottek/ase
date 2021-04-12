@@ -1,6 +1,7 @@
 package dev.hottek.view.dialog;
 
 import dev.hottek.data.FinanceManagerContext;
+import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.view.listener.OpeningWindowListener;
 
 import javax.swing.*;
@@ -8,10 +9,14 @@ import java.awt.*;
 
 public class OpeningWindow extends JDialog {
 
-    private final FinanceManagerContext FMcontext;
+    private FinanceManagerContext FMcontext;
 
-    public OpeningWindow(FinanceManagerContext FMcontext) throws HeadlessException {
-        this.FMcontext = FMcontext;
+    public OpeningWindow() throws HeadlessException {
+        try {
+            this.FMcontext = FinanceManagerContext.getInstance();
+        } catch (FMContextNotCreatedException e) {
+            e.printStackTrace();
+        }
         this.setTitle("Finance Manager");
         this.setSize(300, 300);
         this.setLayout(new BorderLayout());
@@ -24,7 +29,7 @@ public class OpeningWindow extends JDialog {
         JButton openButton = new JButton("Open Existing");
         openButton.setActionCommand("open");
 
-        OpeningWindowListener actionListener = new OpeningWindowListener(this.FMcontext);
+        OpeningWindowListener actionListener = new OpeningWindowListener();
         createButton.addActionListener(actionListener);
         openButton.addActionListener(actionListener);
 
@@ -37,11 +42,6 @@ public class OpeningWindow extends JDialog {
     }
 
     public FinanceManagerContext waitForInput() {
-        return this.FMcontext;
-    }
-
-    public FinanceManagerContext getInput() {
-        assert this.FMcontext.getAccountList() != null;
         return this.FMcontext;
     }
 }

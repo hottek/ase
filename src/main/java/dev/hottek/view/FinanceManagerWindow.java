@@ -3,6 +3,7 @@ package dev.hottek.view;
 import dev.hottek.data.DataHandler;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonWriter;
+import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
 import dev.hottek.view.detail.FinanceMangerPane;
 
@@ -15,7 +16,6 @@ import java.util.List;
 public class FinanceManagerWindow extends JFrame {
 
     private final FinanceMangerPane financeMangerPane;
-    private FinanceManagerContext FMcontext;
 
     public FinanceManagerWindow() throws HeadlessException {
         this.setTitle("Finance Manager");
@@ -42,9 +42,13 @@ public class FinanceManagerWindow extends JFrame {
         this.setVisible(true);
     }
 
-    public void loadDataFromContext(FinanceManagerContext FMcontext) {
-        this.FMcontext = FMcontext;
-        List<Account> accounts = FMcontext.getAccountList();
+    public void loadDataFromContext() {
+        List<Account> accounts = null;
+        try {
+            accounts = FinanceManagerContext.getInstance().getAccountList();
+        } catch (FMContextNotCreatedException e) {
+            e.printStackTrace();
+        }
         for (Account account : accounts) {
             this.financeMangerPane.addAccountPanel(account);
         }
