@@ -29,39 +29,35 @@ public class OpeningWindowListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        switch (e.getActionCommand()) {
-            case "new":
-                Account initialAccount = null;
-                while (initialAccount == null) {
-                    CreateAccountDialog accountDialog = new CreateAccountDialog();
-                    initialAccount = accountDialog.showDialog("Enter the name of the first account");
-                }
-                List<Account> initialAccounts = new LinkedList<>();
-                initialAccounts.add(initialAccount);
-                FMcontext.setAccountList(initialAccounts);
-                FMcontext.setWait(false);
-                break;
-            case "open":
-                JFileChooser fileChooser = setupFileChooser();
-                int returnValue = fileChooser.showOpenDialog(null);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    String filePath = fileChooser.getSelectedFile().getPath();
-                    String filePathWithoutFileType = filePath.split("\\.")[0];
-                    String ivFilePath = filePathWithoutFileType + "_iv.fm";
-                    JsonReader jsonReader = new JsonReader();
-                    if (checkForPasswordProtection()) {
-                        List<Account> accounts = getAccountsFromEncryptedFile(filePath, ivFilePath, jsonReader);
-                        FMcontext.setAccountList(accounts);
-                        FMcontext.setWait(false);
-                        break;
-                    }
-                    List<Account> accounts = jsonReader.readJsonFromFile(filePath);
-                    FMcontext.setAccountList(accounts);
+        String actionCommand = e.getActionCommand();
+        if ("new".equals(actionCommand)) {
+            Account initialAccount = null;
+            while (initialAccount == null) {
+                CreateAccountDialog accountDialog = new CreateAccountDialog();
+                initialAccount = accountDialog.showDialog("Enter the name of the first account");
+            }
+            List<Account> initialAccounts = new LinkedList<>();
+            initialAccounts.add(initialAccount);
+            FMcontext.setInitialAccountList(initialAccounts);
+            FMcontext.setWait(false);
+        } else if ("open".equals(actionCommand)) {
+            JFileChooser fileChooser = setupFileChooser();
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                String filePath = fileChooser.getSelectedFile().getPath();
+                String filePathWithoutFileType = filePath.split("\\.")[0];
+                String ivFilePath = filePathWithoutFileType + "_iv.fm";
+                JsonReader jsonReader = new JsonReader();
+                if (checkForPasswordProtection()) {
+                    List<Account> accounts = getAccountsFromEncryptedFile(filePath, ivFilePath, jsonReader);
+                    FMcontext.setInitialAccountList(accounts);
                     FMcontext.setWait(false);
+                    return;
                 }
-                break;
-            default:
-                break;
+                List<Account> accounts = jsonReader.readJsonFromFile(filePath);
+                FMcontext.setInitialAccountList(accounts);
+                FMcontext.setWait(false);
+            }
         }
     }
 

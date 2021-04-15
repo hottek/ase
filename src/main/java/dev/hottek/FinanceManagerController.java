@@ -20,7 +20,7 @@ class FinanceManagerController {
         openingWindow.setVisible(true);
 
         FinanceManagerWindow financeManagerWindow = new FinanceManagerWindow();
-        financeManagerWindow.loadDataFromContext();
+        financeManagerWindow.loadInitialDataFromContext();
     }
 
     private void waitForInput(OpeningWindow openingWindow) {

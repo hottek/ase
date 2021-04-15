@@ -42,10 +42,10 @@ public class FinanceManagerWindow extends JFrame {
         this.setVisible(true);
     }
 
-    public void loadDataFromContext() {
+    public void loadInitialDataFromContext() {
         List<Account> accounts = null;
         try {
-            accounts = FinanceManagerContext.getInstance().getAccountList();
+            accounts = FinanceManagerContext.getInstance().getInitialAccountList();
         } catch (FMContextNotCreatedException e) {
             e.printStackTrace();
         }
@@ -57,21 +57,22 @@ public class FinanceManagerWindow extends JFrame {
     private class MenuItemListener implements ActionListener { //TODO: create class in listener package
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch (e.getActionCommand()) {
-                case "save":
-                    saveCurrentContext();
-                    break;
-                case "add-account":
-                    financeMangerPane.newAccountPanel();
-                    break;
-                default:
-                    break;
+            String actionCommand = e.getActionCommand();
+            if ("save".equals(actionCommand)) {
+                saveCurrentContext();
+            } else if ("add-account".equals(actionCommand)) {
+                financeMangerPane.newAccountPanel();
             }
         }
 
         private void saveCurrentContext() {
             JsonWriter jsonWriter = new JsonWriter();
-            List<Account> accounts = financeMangerPane.getLatestData();
+            List<Account> accounts = null;
+            try {
+                accounts = FinanceManagerContext.getInstance().getAccountList();
+            } catch (FMContextNotCreatedException e) {
+                e.printStackTrace();
+            }
             String dirPath = selectDir();
             String fileName = retrieveFileName();
             String completeFilePath = dirPath + "\\" + fileName;

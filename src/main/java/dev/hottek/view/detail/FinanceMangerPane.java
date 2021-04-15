@@ -1,5 +1,7 @@
 package dev.hottek.view.detail;
 
+import dev.hottek.data.FinanceManagerContext;
+import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
 import dev.hottek.data.model.Transaction;
 import dev.hottek.view.dialog.CreateAccountDialog;
@@ -9,13 +11,17 @@ import java.util.*;
 import java.util.List;
 
 public class FinanceMangerPane extends JTabbedPane {
-    private final Map<String, AccountPanel> accountPanelMap;
+    private FinanceManagerContext FMContext;
     private OverviewPanel overviewPanel;
     private final AddButtonPanel addButtonPanel;
 
     public FinanceMangerPane() {
         this.setBounds(50, 50, 200, 200);
-        this.accountPanelMap = new HashMap<>();
+        try {
+            this.FMContext = FinanceManagerContext.getInstance();
+        } catch (FMContextNotCreatedException e) {
+            e.printStackTrace();
+        }
         this.addButtonPanel = new AddButtonPanel();
         addOverviewPanel();
         addAddButtonPanel();
@@ -58,7 +64,7 @@ public class FinanceMangerPane extends JTabbedPane {
             transactions = new LinkedList<>();
         }
         AccountPanel accountPanel = new AccountPanel(panelName, balance, transactions);
-        this.accountPanelMap.put(panelName, accountPanel);
+        this.FMContext.addAccountPanel(accountPanel);
         this.add(panelName, accountPanel);
 
         registerAccountPanelAsObservable(accountPanel);
@@ -69,12 +75,6 @@ public class FinanceMangerPane extends JTabbedPane {
         Observable observable = accountPanel.getObservable();
         overviewPanel.addObservable(observable);
         overviewPanel.updateTotalBalance();
-    }
-
-    public List<Account> getLatestData() {
-        List<Account> accounts = new LinkedList<>();
-        this.accountPanelMap.forEach((k, v) -> accounts.add(v.getPanelData()));
-        return accounts;
     }
 
     public void newAccountPanel() {
