@@ -3,6 +3,7 @@ package dev.hottek.view;
 import dev.hottek.data.DataHandler;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonWriter;
+import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
 import dev.hottek.view.detail.FinanceMangerPane;
 
@@ -15,7 +16,6 @@ import java.util.List;
 public class FinanceManagerWindow extends JFrame {
 
     private final FinanceMangerPane financeMangerPane;
-    private FinanceManagerContext FMcontext;
 
     public FinanceManagerWindow() throws HeadlessException {
         this.setTitle("Finance Manager");
@@ -42,9 +42,13 @@ public class FinanceManagerWindow extends JFrame {
         this.setVisible(true);
     }
 
-    public void loadDataFromContext(FinanceManagerContext FMcontext) {
-        this.FMcontext = FMcontext;
-        List<Account> accounts = FMcontext.getAccountList();
+    public void loadInitialDataFromContext() {
+        List<Account> accounts = null;
+        try {
+            accounts = FinanceManagerContext.getInstance().getInitialAccountList();
+        } catch (FMContextNotCreatedException e) {
+            e.printStackTrace();
+        }
         for (Account account : accounts) {
             this.financeMangerPane.addAccountPanel(account);
         }
@@ -53,21 +57,22 @@ public class FinanceManagerWindow extends JFrame {
     private class MenuItemListener implements ActionListener { //TODO: create class in listener package
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch (e.getActionCommand()) {
-                case "save":
-                    saveCurrentContext();
-                    break;
-                case "add-account":
-                    financeMangerPane.newAccountPanel();
-                    break;
-                default:
-                    break;
+            String actionCommand = e.getActionCommand();
+            if ("save".equals(actionCommand)) {
+                saveCurrentContext();
+            } else if ("add-account".equals(actionCommand)) {
+                financeMangerPane.newAccountPanel();
             }
         }
 
         private void saveCurrentContext() {
             JsonWriter jsonWriter = new JsonWriter();
-            List<Account> accounts = financeMangerPane.getLatestData();
+            List<Account> accounts = null;
+            try {
+                accounts = FinanceManagerContext.getInstance().getAccountList();
+            } catch (FMContextNotCreatedException e) {
+                e.printStackTrace();
+            }
             String dirPath = selectDir();
             String fileName = retrieveFileName();
             String completeFilePath = dirPath + "\\" + fileName;

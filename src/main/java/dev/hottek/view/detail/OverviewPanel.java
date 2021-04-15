@@ -1,6 +1,7 @@
 package dev.hottek.view.detail;
 
-import dev.hottek.data.model.Account;
+import dev.hottek.data.FinanceManagerContext;
+import dev.hottek.data.exception.FMContextNotCreatedException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,12 +54,13 @@ public class OverviewPanel extends JPanel implements Observer {
     }
 
     private void getTotalBalance() {
-        List<Account> accounts = financeMangerPane.getLatestData();
-        Float balance = 0.0F;
-        for (Account account : accounts) {
-            balance += account.getBalance();
+        FinanceManagerContext FMContext = null;
+        try {
+            FMContext = FinanceManagerContext.getInstance();
+        } catch (FMContextNotCreatedException e) {
+            e.printStackTrace();
         }
-        totalBalance = balance;
+        totalBalance = FMContext != null ? FMContext.getTotalBalance() : 0.0f;
     }
 
     private void setTotalBalanceLabel() {

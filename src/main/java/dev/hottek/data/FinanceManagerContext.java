@@ -1,29 +1,64 @@
 package dev.hottek.data;
 
+import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
+import dev.hottek.view.detail.AccountPanel;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FinanceManagerContext {
 
-    private List<Account> accountList;
+    private static FinanceManagerContext FMContext;
+
+    public static void create() {
+        if (FMContext != null) return;
+        FMContext = new FinanceManagerContext();
+    }
+
+    public static FinanceManagerContext getInstance() throws FMContextNotCreatedException {
+        if (FMContext == null) throw new FMContextNotCreatedException();
+        return FMContext;
+    }
+
+    private List<Account> listOfInitialAccounts;
+    private List<AccountPanel> accountPanelList;
     private boolean wait;
 
-    public FinanceManagerContext() {
-        this.accountList = new ArrayList<>();
+    private FinanceManagerContext() {
+        this.accountPanelList = new LinkedList<>();
     }
 
     public List<Account> getAccountList() {
+        List<Account> accountList = new LinkedList<>();
+        for (AccountPanel accountPanel : this.accountPanelList) {
+            accountList.add(accountPanel.getPanelData());
+        }
         return accountList;
     }
 
-    public void setAccountList(List<Account> accountList) {
-        this.accountList = accountList;
+    public void addAccountPanel(AccountPanel accountPanel) {
+        this.accountPanelList.add(accountPanel);
+    }
+
+    public Float getTotalBalance() {
+        Float balance = 0.0f;
+        for (AccountPanel accountPanel : this.accountPanelList) {
+            balance += accountPanel.getPanelData().getBalance();
+        }
+        return balance;
+    }
+
+    public void setInitialAccountList(List<Account> accountList) {
+        this.listOfInitialAccounts = accountList;
+    }
+
+    public List<Account> getInitialAccountList() {
+        return this.listOfInitialAccounts;
     }
 
     public boolean isWait() {
-        return wait;
+        return this.wait;
     }
 
     public void setWait(boolean wait) {
