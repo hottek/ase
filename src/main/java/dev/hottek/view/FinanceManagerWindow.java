@@ -43,12 +43,18 @@ public class FinanceManagerWindow extends JFrame {
     }
 
     public void loadInitialDataFromContext() {
-        List<Account> accounts = null;
+        FinanceManagerContext context = null;
         try {
-            accounts = FinanceManagerContext.getInstance().getInitialAccountList();
+            context = FinanceManagerContext.getInstance();
         } catch (FMContextNotCreatedException e) {
             e.printStackTrace();
         }
+        assert context != null;
+        if (context.isOpeningWindowDisposedByUser()) {
+            System.exit(0);
+        }
+        List<Account> accounts = context.getInitialAccountList();
+
         for (Account account : accounts) {
             this.financeMangerPane.addAccountPanel(account);
         }
