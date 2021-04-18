@@ -2,6 +2,8 @@ package dev.hottek.view.dialog;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import dev.hottek.data.InputValidator;
+import dev.hottek.data.exception.InvalidInputException;
 import dev.hottek.data.model.Transaction;
 
 import javax.swing.*;
@@ -55,10 +57,18 @@ public class AddTransactionDialog extends JPanel {
     public Transaction showDialog(String title) {
         int result = JOptionPane.showConfirmDialog(null,this,title,
                 JOptionPane.OK_CANCEL_OPTION);
-        if (result == JOptionPane.OK_OPTION) { // TODO add Input Validator
+        if (result == JOptionPane.OK_OPTION) {
             Timestamp timestamp = Timestamp.valueOf(datePicker.getDate().atStartOfDay());
-            return new Transaction(participantInput.getText(), subjectInput.getText(),
-                    timestamp.getTime(), Float.parseFloat(valueInput.getText()));
+            InputValidator validator = new InputValidator();
+            try {
+                validator.validate(participantInput.getText(), InputValidator.InputType.STRING);
+                validator.validate(subjectInput.getText(), InputValidator.InputType.STRING);
+                validator.validate(valueInput.getText(), InputValidator.InputType.FLOAT);
+                return new Transaction(participantInput.getText(), subjectInput.getText(),
+                        timestamp.getTime(), Float.parseFloat(valueInput.getText()));
+            } catch (InvalidInputException invalidInputException) {
+                JOptionPane.showMessageDialog(new JFrame(), invalidInputException.getMessage(), "Something went wrong", JOptionPane.ERROR_MESSAGE);
+            }
         }
         return null;
     }

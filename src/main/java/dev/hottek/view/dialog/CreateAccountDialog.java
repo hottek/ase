@@ -28,14 +28,14 @@ public class CreateAccountDialog extends JPanel {
         this.add(balancePanel, BorderLayout.SOUTH);
     }
 
-    public Account showDialog(String title) { // TODO handle Cancel or Close Option of Dialog
+    public Account showDialog(String title) {
         int result = JOptionPane.showConfirmDialog(null, this,
                 title, JOptionPane.OK_CANCEL_OPTION);
         String accountNameInputText = this.accountNameInput.getText();
         String balanceInputValue = this.balanceInput.getText();
         if (result == JOptionPane.OK_OPTION) {
             try {
-                InputValidator validator = new InputValidator(); // TODO Add Input Validator for balanceInput
+                InputValidator validator = new InputValidator();
                 validator.validate(accountNameInputText, InputValidator.InputType.STRING);
                 validator.validate(balanceInputValue, InputValidator.InputType.FLOAT);
                 return new Account(accountNameInputText, Float.parseFloat(this.balanceInput.getText()), null);
