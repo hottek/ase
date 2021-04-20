@@ -6,6 +6,8 @@ import dev.hottek.view.listener.OpeningWindowListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class OpeningWindow extends JDialog {
 
@@ -38,6 +40,13 @@ public class OpeningWindow extends JDialog {
         this.add(buttonPanel);
 
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                FMcontext.setOpeningWindowDisposedByUser(true);
+                e.getWindow().dispose();
+            }
+        });
         this.FMcontext.setWait(true);
     }
 

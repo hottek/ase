@@ -21,6 +21,7 @@ public class AccountPanel extends JPanel {
     private DefaultTableModel tableModel;
     private JLabel balanceLabel;
 
+    //TODO: Add option to delete transactions from table
     public AccountPanel(String accountName, float balance, List<Transaction> transactions) {
 
         panelData = new AccountPanelData(accountName, balance, transactions);
@@ -66,7 +67,7 @@ public class AccountPanel extends JPanel {
         Vector<String> columnNames = getColumnNames();
         Vector<Vector<Object>> tableData = getTableData();
         JTable transactionTable = new JTable(tableData, columnNames);
-        tableModel = (DefaultTableModel) transactionTable.getModel();
+        tableModel = (DefaultTableModel) transactionTable.getModel(); //TODO: style table, add column names etc
         transactionPanel.add(transactionTable);
 
         AddTransactionListener addTransactionListener = new AddTransactionListener(this);

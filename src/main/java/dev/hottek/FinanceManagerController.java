@@ -1,6 +1,7 @@
 package dev.hottek;
 
 import dev.hottek.data.FinanceManagerContext;
+import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.view.FinanceManagerWindow;
 import dev.hottek.view.dialog.OpeningWindow;
 
@@ -18,9 +19,20 @@ class FinanceManagerController {
         openingWindow.setModal(true);
         waitForInput(openingWindow);
         openingWindow.setVisible(true);
-
+        quitIfUserDisposedOfOpeningWindow();
         FinanceManagerWindow financeManagerWindow = new FinanceManagerWindow();
         financeManagerWindow.loadInitialDataFromContext();
+    }
+
+    private void quitIfUserDisposedOfOpeningWindow() {
+        try {
+            FinanceManagerContext context = FinanceManagerContext.getInstance();
+            if (context.isOpeningWindowDisposedByUser()) {
+                System.exit(0);
+            }
+        } catch (FMContextNotCreatedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void waitForInput(OpeningWindow openingWindow) {

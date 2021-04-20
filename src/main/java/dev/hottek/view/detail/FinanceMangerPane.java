@@ -82,6 +82,8 @@ public class FinanceMangerPane extends JTabbedPane {
         Account newAccount = accountDialog.showDialog("Create new Account");
         if (newAccount != null) {
             addAccountPanel(newAccount);
+        } else {
+            this.setSelectedIndex(0);
         }
     }
 
