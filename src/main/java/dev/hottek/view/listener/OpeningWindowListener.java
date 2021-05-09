@@ -38,6 +38,7 @@ public class OpeningWindowListener implements ActionListener {
             }
             List<Account> initialAccounts = new LinkedList<>();
             initialAccounts.add(initialAccount);
+            //TODO: write to history file that this account was created
             FMcontext.setInitialAccountList(initialAccounts);
             FMcontext.setWait(false);
         } else if ("open".equals(actionCommand)) {

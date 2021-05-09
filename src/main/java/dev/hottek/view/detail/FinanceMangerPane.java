@@ -73,7 +73,7 @@ public class FinanceMangerPane extends JTabbedPane {
             transactions = new LinkedList<>();
         }
         AccountPanel accountPanel = new AccountPanel(panelName, balance, transactions);
-        this.FMContext.addAccountPanel(accountPanel);
+        this.FMContext.addAccountPanel(accountPanel); //TODO: write to history file that a new AccountPanel was created
         this.add(panelName, accountPanel);
 
         registerAccountPanelAsObservable(accountPanel);
