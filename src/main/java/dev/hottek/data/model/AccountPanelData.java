@@ -38,12 +38,18 @@ public class AccountPanelData extends Observable {
         accountPanelDataChanged();
     }
 
+    public void removeTransaction(int index) {
+        this.transactions.remove(index);
+        calculateNewBalance();
+        accountPanelDataChanged();
+    }
+
     private void calculateNewBalance() {
         Float newBalance = 0.0F;
         for (Transaction transaction : transactions) {
             newBalance += transaction.getValue();
         }
-        balance += newBalance;
+        balance = newBalance;
         accountPanelDataChanged();
     }
 
