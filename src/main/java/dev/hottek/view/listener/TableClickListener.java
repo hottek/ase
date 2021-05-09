@@ -24,7 +24,10 @@ public class TableClickListener extends MouseAdapter {
             int column = table.getSelectedColumn();
             DefaultTableModel tableModel = accountPanel.getTableModel();
             if (column == tableModel.getColumnCount() - 1) {
-                //TODO: dialog to confirm
+                int result = JOptionPane.showConfirmDialog(null, "Delete this entry?");
+                if (result == JOptionPane.NO_OPTION
+                        || result == JOptionPane.CANCEL_OPTION
+                        || result == JOptionPane.CLOSED_OPTION) return;
                 accountPanel.removeTransaction(row);
             }
         }
