@@ -3,6 +3,7 @@ package dev.hottek.view.detail;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
+import dev.hottek.data.model.HistoryEntry;
 import dev.hottek.data.model.Transaction;
 import dev.hottek.view.dialog.CreateAccountDialog;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class FinanceMangerPane extends JTabbedPane {
     private FinanceManagerContext FMContext;
     private OverviewPanel overviewPanel;
+    private HistoryPanel historyPanel;
     private final AddButtonPanel addButtonPanel;
 
     public FinanceMangerPane() {
@@ -24,6 +26,7 @@ public class FinanceMangerPane extends JTabbedPane {
         }
         this.addButtonPanel = new AddButtonPanel();
         addOverviewPanel();
+        addHistoryPanel();
         addAddButtonPanel();
         this.addChangeListener(e -> {
             Object source = e.getSource();
@@ -39,6 +42,12 @@ public class FinanceMangerPane extends JTabbedPane {
         } catch (NullPointerException ignored) { }
         this.add(addButtonPanel, this.getTabCount());
         this.setTitleAt(this.getTabCount() - 1, "+");
+    }
+
+    private void addHistoryPanel() {
+        String panelName = "History";
+        this.historyPanel = new HistoryPanel();
+        this.add(panelName, this.historyPanel);
     }
 
     private void addOverviewPanel() {
@@ -85,6 +94,10 @@ public class FinanceMangerPane extends JTabbedPane {
         } else {
             this.setSelectedIndex(0);
         }
+    }
+
+    public HistoryPanel getHistoryPanel() {
+        return historyPanel;
     }
 
     private static class AddButtonPanel extends JPanel { } // dummy class for component of tab

@@ -48,6 +48,7 @@ public class OpeningWindowListener implements ActionListener {
                 String filePathWithoutFileType = filePath.split("\\.")[0];
                 String ivFilePath = filePathWithoutFileType + "_iv.fm";
                 JsonReader jsonReader = new JsonReader();
+                //TODO: load history entries from file
                 if (checkForPasswordProtection()) {
                     List<Account> accounts = getAccountsFromEncryptedFile(filePath, ivFilePath, jsonReader);
                     FMcontext.setInitialAccountList(accounts);
