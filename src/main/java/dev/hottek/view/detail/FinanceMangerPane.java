@@ -3,7 +3,6 @@ package dev.hottek.view.detail;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
-import dev.hottek.data.model.HistoryEntry;
 import dev.hottek.data.model.Transaction;
 import dev.hottek.view.dialog.CreateAccountDialog;
 
