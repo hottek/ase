@@ -2,9 +2,13 @@ package dev.hottek.view.detail;
 
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.exception.FMContextNotCreatedException;
+import dev.hottek.data.model.AccountPanelData;
+import dev.hottek.data.model.HistoryEntry;
+import dev.hottek.data.model.Transaction;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -37,6 +41,22 @@ public class OverviewPanel extends JPanel implements Observer {
     @Override
     public void update(Observable observable, Object object) {
         updateTotalBalance();
+        addHistoryEntry((AccountPanelData) observable);
+    }
+
+    private void addHistoryEntry(AccountPanelData data) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        String message = "";
+        Transaction transaction = data.getMostRecentTransaction();
+        if (data.isRemove()) {
+            message = "Account " + data.getAccountName() + " removed Transaction with subject: "
+                    + transaction.getSubject() + " and value: " + transaction.getValue();
+        } else {
+            message = "Account " + data.getAccountName() + " added Transaction with subject: "
+                    + transaction.getSubject() + " and value: " + transaction.getValue();
+        }
+        HistoryEntry historyEntry = new HistoryEntry(message, timestamp.getTime());
+        financeMangerPane.getHistoryPanel().addHistoryEntry(historyEntry);
     }
 
     public void updateTotalBalance() {

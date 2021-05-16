@@ -13,6 +13,7 @@ import java.util.List;
 public class FinanceMangerPane extends JTabbedPane {
     private FinanceManagerContext FMContext;
     private OverviewPanel overviewPanel;
+    private HistoryPanel historyPanel;
     private final AddButtonPanel addButtonPanel;
 
     public FinanceMangerPane() {
@@ -24,6 +25,7 @@ public class FinanceMangerPane extends JTabbedPane {
         }
         this.addButtonPanel = new AddButtonPanel();
         addOverviewPanel();
+        addHistoryPanel();
         addAddButtonPanel();
         this.addChangeListener(e -> {
             Object source = e.getSource();
@@ -39,6 +41,12 @@ public class FinanceMangerPane extends JTabbedPane {
         } catch (NullPointerException ignored) { }
         this.add(addButtonPanel, this.getTabCount());
         this.setTitleAt(this.getTabCount() - 1, "+");
+    }
+
+    private void addHistoryPanel() {
+        String panelName = "History";
+        this.historyPanel = new HistoryPanel();
+        this.add(panelName, this.historyPanel);
     }
 
     private void addOverviewPanel() {
@@ -64,7 +72,7 @@ public class FinanceMangerPane extends JTabbedPane {
             transactions = new LinkedList<>();
         }
         AccountPanel accountPanel = new AccountPanel(panelName, balance, transactions);
-        this.FMContext.addAccountPanel(accountPanel);
+        this.FMContext.addAccountPanel(accountPanel); //TODO: write to history file that a new AccountPanel was created
         this.add(panelName, accountPanel);
 
         registerAccountPanelAsObservable(accountPanel);
@@ -85,6 +93,10 @@ public class FinanceMangerPane extends JTabbedPane {
         } else {
             this.setSelectedIndex(0);
         }
+    }
+
+    public HistoryPanel getHistoryPanel() {
+        return historyPanel;
     }
 
     private static class AddButtonPanel extends JPanel { } // dummy class for component of tab

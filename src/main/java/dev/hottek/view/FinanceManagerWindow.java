@@ -76,6 +76,7 @@ public class FinanceManagerWindow extends JFrame {
             String dirPath = selectDir();
             String fileName = retrieveFileName();
             String completeFilePath = dirPath + "\\" + fileName;
+            //TODO: save history entries
             if (checkForPasswordProtection()) {
                 encryptAndSafeCurrentContext(jsonWriter, accounts, completeFilePath);
                 return;
