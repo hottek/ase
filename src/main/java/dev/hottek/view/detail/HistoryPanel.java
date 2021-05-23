@@ -44,7 +44,7 @@ public class HistoryPanel extends JPanel {
 
         Vector<String> columnNames = new Vector<>();
         columnNames.add("Main");
-        Vector<Vector<Object>> tableData = getTableData();
+        Vector<Vector<String>> tableData = getTableData();
         JTable historyTable = new JTable(tableData, columnNames);
         tableModel = (DefaultTableModel) historyTable.getModel();
         historyTable.getColumnModel().getColumn(0).setPreferredWidth(550);
@@ -53,13 +53,11 @@ public class HistoryPanel extends JPanel {
         this.add(mainPanel, BorderLayout.NORTH);
     }
 
-    private Vector<Vector<Object>> getTableData() {
-        Vector<Vector<Object>> tableData = new Vector<>();
+    private Vector<Vector<String>> getTableData() {
+        Vector<Vector<String>> tableData = new Vector<>();
         for (HistoryEntry historyEntry : historyEntries) {
             Vector<String> rowData = buildRowEntry(historyEntry);
-            Vector<Object> rowVector = new Vector<>();
-            rowVector.add(rowData);
-            tableData.add(rowVector);
+            tableData.add(rowData);
         }
         return tableData;
     }
