@@ -5,6 +5,7 @@ import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
 import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
+import dev.hottek.data.model.HistoryEntry;
 import dev.hottek.view.dialog.CreateAccountDialog;
 
 import javax.swing.*;
@@ -38,7 +39,10 @@ public class OpeningWindowListener implements ActionListener {
             }
             List<Account> initialAccounts = new LinkedList<>();
             initialAccounts.add(initialAccount);
-            //TODO: write to history file that this account was created
+            List<HistoryEntry> initialHistory = new LinkedList<>();
+            HistoryEntry historyEntry = new HistoryEntry("Finance Manager instance created", System.currentTimeMillis());
+            initialHistory.add(historyEntry);
+            FMcontext.setHistoryEntries(initialHistory);
             FMcontext.setInitialAccountList(initialAccounts);
             FMcontext.setWait(false);
         } else if ("open".equals(actionCommand)) {

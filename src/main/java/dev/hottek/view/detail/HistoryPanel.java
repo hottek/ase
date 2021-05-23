@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -24,10 +23,7 @@ public class HistoryPanel extends JPanel {
         } catch (FMContextNotCreatedException e) {
             e.printStackTrace();
         }
-        //TODO: load from FMContext, initial load from file
-        // to Context must be done first
-        //this.historyEntries = FMContext.getHistoryEntries();
-        this.historyEntries = new LinkedList<>();
+        this.historyEntries = FMContext.getHistoryEntries();
         this.setLayout(new BorderLayout());
 
         displayHistory();
