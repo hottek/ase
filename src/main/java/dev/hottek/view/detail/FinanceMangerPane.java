@@ -3,12 +3,14 @@ package dev.hottek.view.detail;
 import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
+import dev.hottek.data.model.HistoryEntry;
 import dev.hottek.data.model.Transaction;
 import dev.hottek.view.dialog.CreateAccountDialog;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
 public class FinanceMangerPane extends JTabbedPane {
     private FinanceManagerContext FMContext;
@@ -72,7 +74,7 @@ public class FinanceMangerPane extends JTabbedPane {
             transactions = new LinkedList<>();
         }
         AccountPanel accountPanel = new AccountPanel(panelName, balance, transactions);
-        this.FMContext.addAccountPanel(accountPanel); //TODO: write to history file that a new AccountPanel was created
+        this.FMContext.addAccountPanel(accountPanel);
         this.add(panelName, accountPanel);
 
         registerAccountPanelAsObservable(accountPanel);
@@ -90,6 +92,8 @@ public class FinanceMangerPane extends JTabbedPane {
         Account newAccount = accountDialog.showDialog("Create new Account");
         if (newAccount != null) {
             addAccountPanel(newAccount);
+            HistoryEntry historyEntry = new HistoryEntry("New Account Panel " + newAccount.getName() + " Created", System.currentTimeMillis());
+            historyPanel.addHistoryEntry(historyEntry);
         } else {
             this.setSelectedIndex(0);
         }

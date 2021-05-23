@@ -40,8 +40,10 @@ public class OpeningWindowListener implements ActionListener {
             List<Account> initialAccounts = new LinkedList<>();
             initialAccounts.add(initialAccount);
             List<HistoryEntry> initialHistory = new LinkedList<>();
-            HistoryEntry historyEntry = new HistoryEntry("Finance Manager instance created", System.currentTimeMillis());
-            initialHistory.add(historyEntry);
+            HistoryEntry instanceCreated = new HistoryEntry("Finance Manager instance created", System.currentTimeMillis());
+            HistoryEntry accountCreated = new HistoryEntry("New Account Panel " + initialAccount.getName() + " Created", System.currentTimeMillis());
+            initialHistory.add(instanceCreated);
+            initialHistory.add(accountCreated);
             FMcontext.setHistoryEntries(initialHistory);
             FMcontext.setInitialAccountList(initialAccounts);
             FMcontext.setWait(false);
