@@ -34,7 +34,7 @@ public class HistoryPanel extends JPanel {
         historyEntries.add(historyEntry);
         FMContext.addHistoryEntry(historyEntry);
         Vector<String> rowEntry = buildRowEntry(historyEntry);
-        tableModel.addRow(rowEntry); // TODO add Row to the top of the table, don't append it
+        tableModel.insertRow(0, rowEntry);
         tableModel.fireTableDataChanged();
     }
 
