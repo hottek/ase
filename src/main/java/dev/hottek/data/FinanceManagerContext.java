@@ -2,6 +2,7 @@ package dev.hottek.data;
 
 import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
+import dev.hottek.data.model.HistoryEntry;
 import dev.hottek.view.detail.AccountPanel;
 
 import java.util.LinkedList;
@@ -23,10 +24,14 @@ public class FinanceManagerContext {
 
     private List<Account> listOfInitialAccounts;
     private List<AccountPanel> accountPanelList;
+    private List<HistoryEntry> historyEntries;
+    private boolean openingWindowDisposedByUser;
     private boolean wait;
 
     private FinanceManagerContext() {
         this.accountPanelList = new LinkedList<>();
+        this.historyEntries = new LinkedList<>();
+        this.openingWindowDisposedByUser = false;
     }
 
     public List<Account> getAccountList() {
@@ -63,5 +68,24 @@ public class FinanceManagerContext {
 
     public void setWait(boolean wait) {
         this.wait = wait;
+    }
+
+    public boolean isOpeningWindowDisposedByUser() {
+        return openingWindowDisposedByUser;
+    }
+
+    public void setOpeningWindowDisposedByUser(boolean openingWindowDisposedByUser) {
+        this.openingWindowDisposedByUser = openingWindowDisposedByUser;
+    }
+
+    public void setHistoryEntries(List<HistoryEntry> historyEntries) {
+        this.historyEntries = historyEntries;
+    }
+    public void addHistoryEntry(HistoryEntry historyEntry) {
+        this.historyEntries.add(historyEntry);
+    }
+
+    public List<HistoryEntry> getHistoryEntries() {
+        return this.historyEntries;
     }
 }

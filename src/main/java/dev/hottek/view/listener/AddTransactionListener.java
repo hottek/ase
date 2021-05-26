@@ -19,6 +19,7 @@ public class AddTransactionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         AddTransactionDialog transactionDialog = new AddTransactionDialog();
         Transaction transaction = transactionDialog.showDialog("Enter new transaction");
+        if (transaction == null) return;
         this.accountPanel.addTransaction(transaction);
     }
 }

@@ -8,6 +8,7 @@ public class AccountPanelData extends Observable {
     private final String accountName;
     private float balance;
     private final List<Transaction> transactions;
+    private boolean remove;
 
     public AccountPanelData(String accountName, float balance, List<Transaction> transactions) {
         this.accountName = accountName;
@@ -17,6 +18,7 @@ public class AccountPanelData extends Observable {
         } else {
             this.transactions = transactions;
         }
+        this.remove = false;
         accountPanelDataChanged();
     }
 
@@ -38,12 +40,27 @@ public class AccountPanelData extends Observable {
         accountPanelDataChanged();
     }
 
+    public void removeTransaction(int index) {
+        this.remove = true;
+        calculateNewBalance();
+        accountPanelDataChanged();
+        this.transactions.remove(index);
+    }
+
+    public Transaction getMostRecentTransaction() {
+        return this.transactions.get(this.transactions.size() - 1);
+    }
+
+    public boolean isRemove() {
+        return this.remove;
+    }
+
     private void calculateNewBalance() {
-        Float newBalance = 0.0F;
+        Float newBalance = balance;
         for (Transaction transaction : transactions) {
             newBalance += transaction.getValue();
         }
-        balance += newBalance;
+        balance = newBalance;
         accountPanelDataChanged();
     }
 

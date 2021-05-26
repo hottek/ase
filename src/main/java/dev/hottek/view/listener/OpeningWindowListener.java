@@ -5,6 +5,8 @@ import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonReader;
 import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
+import dev.hottek.data.model.HistoryEntry;
+import dev.hottek.data.model.SafeFormat;
 import dev.hottek.view.dialog.CreateAccountDialog;
 
 import javax.swing.*;
@@ -38,6 +40,12 @@ public class OpeningWindowListener implements ActionListener {
             }
             List<Account> initialAccounts = new LinkedList<>();
             initialAccounts.add(initialAccount);
+            List<HistoryEntry> initialHistory = new LinkedList<>();
+            HistoryEntry instanceCreated = new HistoryEntry("Finance Manager instance created", System.currentTimeMillis());
+            HistoryEntry accountCreated = new HistoryEntry("New Account Panel " + initialAccount.getName() + " Created", System.currentTimeMillis());
+            initialHistory.add(instanceCreated);
+            initialHistory.add(accountCreated);
+            FMcontext.setHistoryEntries(initialHistory);
             FMcontext.setInitialAccountList(initialAccounts);
             FMcontext.setWait(false);
         } else if ("open".equals(actionCommand)) {
@@ -49,13 +57,15 @@ public class OpeningWindowListener implements ActionListener {
                 String ivFilePath = filePathWithoutFileType + "_iv.fm";
                 JsonReader jsonReader = new JsonReader();
                 if (checkForPasswordProtection()) {
-                    List<Account> accounts = getAccountsFromEncryptedFile(filePath, ivFilePath, jsonReader);
-                    FMcontext.setInitialAccountList(accounts);
+                    SafeFormat data = getAccountsFromEncryptedFile(filePath, ivFilePath, jsonReader);
+                    FMcontext.setInitialAccountList(data.getAccountList());
+                    FMcontext.setHistoryEntries(data.getHistoryEntryList());
                     FMcontext.setWait(false);
                     return;
                 }
-                List<Account> accounts = jsonReader.readJsonFromFile(filePath);
-                FMcontext.setInitialAccountList(accounts);
+                SafeFormat data = jsonReader.readJsonFromFile(filePath);
+                FMcontext.setInitialAccountList(data.getAccountList());
+                FMcontext.setHistoryEntries(data.getHistoryEntryList());
                 FMcontext.setWait(false);
             }
         }
@@ -70,7 +80,7 @@ public class OpeningWindowListener implements ActionListener {
         return fileChooser;
     }
 
-    private List<Account> getAccountsFromEncryptedFile(String filePath, String ivFilePath, JsonReader jsonReader) {
+    private SafeFormat getAccountsFromEncryptedFile(String filePath, String ivFilePath, JsonReader jsonReader) {
         String password = retrievePassword();
         DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
         String data = dataHandler.loadData();
