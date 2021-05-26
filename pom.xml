@@ -29,6 +29,25 @@
                     <target>16</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>com.jolira</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>dev.hottek.FinanceManager</mainClass>
+                            <attachToBuild>true</attachToBuild>
+                            <filename>
+                                ${project.build.finalName}.${project.packaging}
+                            </filename>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
