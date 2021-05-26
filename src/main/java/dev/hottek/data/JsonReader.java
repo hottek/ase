@@ -1,11 +1,9 @@
 package dev.hottek.data;
 
 import com.google.gson.Gson;
-import dev.hottek.data.model.Account;
+import dev.hottek.data.model.SafeFormat;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
 public class JsonReader {
 
@@ -15,21 +13,21 @@ public class JsonReader {
         this.gson = new Gson();
     }
 
-    public List<Account> readJsonFromFile(String filePath) {
+    public SafeFormat readJsonFromFile(String filePath) {
         try {
             BufferedReader bufferedReader = new BufferedReader(
                     new FileReader(filePath)
             );
-            return Arrays.asList(gson.fromJson(bufferedReader, Account[].class));
+            return gson.fromJson(bufferedReader, SafeFormat.class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public List<Account> readJsonFromString(String data) {
+    public SafeFormat readJsonFromString(String data) {
         Reader stringReader = new StringReader(data);
         BufferedReader bufferedReader = new BufferedReader(stringReader);
-        return Arrays.asList(gson.fromJson(bufferedReader, Account[].class));
+        return gson.fromJson(bufferedReader, SafeFormat.class);
     }
 }

@@ -5,6 +5,8 @@ import dev.hottek.data.FinanceManagerContext;
 import dev.hottek.data.JsonWriter;
 import dev.hottek.data.exception.FMContextNotCreatedException;
 import dev.hottek.data.model.Account;
+import dev.hottek.data.model.HistoryEntry;
+import dev.hottek.data.model.SafeFormat;
 import dev.hottek.view.detail.FinanceMangerPane;
 
 import javax.swing.*;
@@ -68,29 +70,32 @@ public class FinanceManagerWindow extends JFrame {
         private void saveCurrentContext() {
             JsonWriter jsonWriter = new JsonWriter();
             List<Account> accounts = null;
+            List<HistoryEntry> historyEntries = null;
             try {
                 accounts = FinanceManagerContext.getInstance().getAccountList();
+                historyEntries = FinanceManagerContext.getInstance().getHistoryEntries();
             } catch (FMContextNotCreatedException e) {
                 e.printStackTrace();
             }
             String dirPath = selectDir();
             String fileName = retrieveFileName();
             String completeFilePath = dirPath + "\\" + fileName;
-            //TODO: save history entries
+            SafeFormat dataToSave = new SafeFormat(accounts, historyEntries);
             if (checkForPasswordProtection()) {
-                encryptAndSafeCurrentContext(jsonWriter, accounts, completeFilePath);
+                encryptAndSafeCurrentContext(jsonWriter, dataToSave, completeFilePath);
                 return;
             }
-            jsonWriter.writeToFile(accounts, completeFilePath + ".fm");
+            jsonWriter.writeToFile(dataToSave, completeFilePath + ".fm");
+            //TODO: Add dialog to notify user that data is saved
         }
 
-        private void encryptAndSafeCurrentContext(JsonWriter jsonWriter, List<Account> accounts, String completeFilePath) {
-            String accountsAsJson = jsonWriter.writeToString(accounts);
+        private void encryptAndSafeCurrentContext(JsonWriter jsonWriter, SafeFormat dataToSave, String completeFilePath) {
+            String dataAsJson = jsonWriter.writeToString(dataToSave);
             String password = retrievePassword();
             String filePath = completeFilePath + "_encrypted.fm";
             String ivFilePath = completeFilePath + "_encrypted_iv.fm";
             DataHandler dataHandler = new DataHandler(password, filePath, ivFilePath);
-            dataHandler.saveData(accountsAsJson);
+            dataHandler.saveData(dataAsJson);
         }
 
         private String selectDir() {
