@@ -1,2 +1,1 @@
-mvn install
-mvn onejar:one-jar
+mvn clean install
