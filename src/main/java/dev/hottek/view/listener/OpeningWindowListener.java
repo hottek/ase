@@ -34,9 +34,10 @@ public class OpeningWindowListener implements ActionListener {
         String actionCommand = e.getActionCommand();
         if ("new".equals(actionCommand)) {
             Account initialAccount = null;
-            while (initialAccount == null) {
-                CreateAccountDialog accountDialog = new CreateAccountDialog();
-                initialAccount = accountDialog.showDialog("Enter the name of the first account");
+            CreateAccountDialog accountDialog = new CreateAccountDialog();
+            initialAccount = accountDialog.showDialog("Enter the name of the first account");
+            if (initialAccount == null) {
+                return;
             }
             List<Account> initialAccounts = new LinkedList<>();
             initialAccounts.add(initialAccount);

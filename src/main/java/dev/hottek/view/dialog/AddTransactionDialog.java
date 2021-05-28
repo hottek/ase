@@ -1,22 +1,18 @@
 package dev.hottek.view.dialog;
 
-import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
 import dev.hottek.data.InputValidator;
 import dev.hottek.data.exception.InvalidInputException;
 import dev.hottek.data.model.Transaction;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Timestamp;
-import java.util.Locale;
 
 public class AddTransactionDialog extends JPanel {
 
     private final JTextField participantInput;
     private final JTextField subjectInput;
     private final JTextField valueInput;
-    private final DatePicker datePicker;
+    //private final DatePicker datePicker;
 
     public AddTransactionDialog() {
         this.setLayout(new BorderLayout());
@@ -38,10 +34,11 @@ public class AddTransactionDialog extends JPanel {
 
         JPanel datePanel = new JPanel();
         datePanel.add(new JLabel("Select the date of the transaction:"));
-        DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.GERMANY);
+        //TODO: Add own date picker with DD/MM/YYYY
+        /*DatePickerSettings datePickerSettings = new DatePickerSettings(Locale.GERMANY);
         datePicker = new DatePicker(datePickerSettings);
         datePicker.setDateToToday();
-        datePanel.add(datePicker);
+        datePanel.add(datePicker);*/
         bottomPanel.add(datePanel, BorderLayout.WEST);
 
         JPanel valuePanel = new JPanel();
@@ -58,14 +55,14 @@ public class AddTransactionDialog extends JPanel {
         int result = JOptionPane.showConfirmDialog(null,this,title,
                 JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
-            Timestamp timestamp = Timestamp.valueOf(datePicker.getDate().atStartOfDay());
+            long timestamp = System.currentTimeMillis();
             InputValidator validator = new InputValidator();
             try {
                 validator.validate(participantInput.getText(), InputValidator.InputType.STRING);
                 validator.validate(subjectInput.getText(), InputValidator.InputType.STRING);
                 validator.validate(valueInput.getText(), InputValidator.InputType.FLOAT);
                 return new Transaction(participantInput.getText(), subjectInput.getText(),
-                        timestamp.getTime(), Float.parseFloat(valueInput.getText()));
+                        timestamp, Float.parseFloat(valueInput.getText()));
             } catch (InvalidInputException invalidInputException) {
                 JOptionPane.showMessageDialog(new JFrame(), invalidInputException.getMessage(), "Something went wrong", JOptionPane.ERROR_MESSAGE);
             }
