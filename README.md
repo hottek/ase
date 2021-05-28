@@ -4,5 +4,5 @@
 - Uses Java 16
 
 ## Usage
-Make sure Maven is installed on your system.  
+Make sure Maven and Java is installed on your system.  
 `$ mvn onejar:one-jar` produces an executable jar file in the `/target`-folder.
