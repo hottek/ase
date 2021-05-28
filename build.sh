@@ -5,7 +5,7 @@ sudo add-apt-repository ppa:linuxuprising/java
 # refresh package cache
 sudo apt update
 # install java16
-sudo apt install oracle-java16-installer
+sudo apt install oracle-java16-set-default
 # check that java16 is installed
 java --version
 
