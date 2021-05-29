@@ -3,7 +3,6 @@ package dev.hottek;
 import org.pushingpixels.substance.api.skin.SubstanceGraphiteElectricLookAndFeel;
 
 import javax.swing.*;
-//TODO: Add Build-script
 public class FinanceManager {
     public static void main(String[] args) {
         JFrame.setDefaultLookAndFeelDecorated(true);
