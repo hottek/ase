@@ -83,10 +83,10 @@ public class FinanceManagerWindow extends JFrame {
             SafeFormat dataToSave = new SafeFormat(accounts, historyEntries);
             if (checkForPasswordProtection()) {
                 encryptAndSafeCurrentContext(jsonWriter, dataToSave, completeFilePath);
-                return;
+            } else {
+                jsonWriter.writeToFile(dataToSave, completeFilePath + ".fm");
             }
-            jsonWriter.writeToFile(dataToSave, completeFilePath + ".fm");
-            //TODO: Add dialog to notify user that data is saved
+            JOptionPane.showMessageDialog(null, "Saved");
         }
 
         private void encryptAndSafeCurrentContext(JsonWriter jsonWriter, SafeFormat dataToSave, String completeFilePath) {
