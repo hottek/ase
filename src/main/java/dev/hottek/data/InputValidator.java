@@ -2,6 +2,11 @@ package dev.hottek.data;
 
 import dev.hottek.data.exception.InvalidInputException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Calendar;
+
 public class InputValidator {
     public InputValidator() { }
 
@@ -18,11 +23,19 @@ public class InputValidator {
                     throw new InvalidInputException();
                 }
                 break;
+            case DATE:
+                try {
+                    LocalDate.parse(String.valueOf(input), DateTimeFormatter.BASIC_ISO_DATE);
+                } catch (DateTimeParseException e) {
+                    throw new InvalidInputException();
+                }
+                break;
         }
     }
 
     public enum InputType {
         STRING,
-        FLOAT
+        FLOAT,
+        DATE
     }
 }
