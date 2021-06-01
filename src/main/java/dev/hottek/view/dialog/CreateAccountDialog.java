@@ -42,6 +42,8 @@ public class CreateAccountDialog extends JPanel {
             } catch (InvalidInputException invalidInputException) {
                 JOptionPane.showMessageDialog(new JFrame(), invalidInputException.getMessage(), "Something went wrong", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            return null;
         }
         return null;
     }
