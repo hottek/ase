@@ -14,20 +14,20 @@ public class InputValidator {
         switch (type) {
             case STRING:
                 String inputString = (String) input;
-                if (inputString.length() < 1) throw new InvalidInputException();
+                if (inputString.length() < 1) throw new InvalidInputException("Not a valid string");
                 break;
             case FLOAT:
                 try {
                     Float inputFloat = Float.parseFloat(String.valueOf(input));
                 } catch (NumberFormatException | ClassCastException e) {
-                    throw new InvalidInputException();
+                    throw new InvalidInputException("Not a valid number");
                 }
                 break;
             case DATE:
                 try {
                     LocalDate.parse(String.valueOf(input), DateTimeFormatter.BASIC_ISO_DATE);
                 } catch (DateTimeParseException e) {
-                    throw new InvalidInputException();
+                    throw new InvalidInputException("Not a valid date");
                 }
                 break;
         }
