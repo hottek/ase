@@ -46,9 +46,7 @@ public class OpeningWindowListener implements ActionListener {
             HistoryEntry accountCreated = new HistoryEntry("New Account Panel " + initialAccount.getName() + " Created", System.currentTimeMillis());
             initialHistory.add(instanceCreated);
             initialHistory.add(accountCreated);
-            FMcontext.setHistoryEntries(initialHistory);
-            FMcontext.setInitialAccountList(initialAccounts);
-            FMcontext.setWait(false);
+            notifyFMcontext(initialAccounts, initialHistory);
         } else if ("open".equals(actionCommand)) {
             JFileChooser fileChooser = setupFileChooser();
             int returnValue = fileChooser.showOpenDialog(null);
@@ -59,17 +57,19 @@ public class OpeningWindowListener implements ActionListener {
                 JsonReader jsonReader = new JsonReader();
                 if (checkForPasswordProtection()) {
                     SafeFormat data = getAccountsFromEncryptedFile(filePath, ivFilePath, jsonReader);
-                    FMcontext.setInitialAccountList(data.getAccountList());
-                    FMcontext.setHistoryEntries(data.getHistoryEntryList());
-                    FMcontext.setWait(false);
+                    notifyFMcontext(data.getAccountList(), data.getHistoryEntryList());
                     return;
                 }
                 SafeFormat data = jsonReader.readJsonFromFile(filePath);
-                FMcontext.setInitialAccountList(data.getAccountList());
-                FMcontext.setHistoryEntries(data.getHistoryEntryList());
-                FMcontext.setWait(false);
+                notifyFMcontext(data.getAccountList(), data.getHistoryEntryList());
             }
         }
+    }
+
+    private void notifyFMcontext(List<Account> accountList, List<HistoryEntry> historyEntries) {
+        FMcontext.setHistoryEntries(historyEntries);
+        FMcontext.setInitialAccountList(accountList);
+        FMcontext.setWait(false);
     }
 
     private JFileChooser setupFileChooser() {
